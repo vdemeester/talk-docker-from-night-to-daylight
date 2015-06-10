@@ -10,6 +10,6 @@
   "private": true,
   "dependencies": {
     "grunt": "^0.4.5",
-    "zenika-formation-framework": "git+https://github.com/Zenika/Formation--Framework.git#tags/0.3.0"
+    "zenika-formation-framework": "git+https://c637e8e0d39b038827c5f6eb54b5ff84c6b576d0:x-oauth-basic@github.com/Zenika/Formation--Framework.git#tags/0.3.4"
   }
 }
