@@ -1,7 +1,11 @@
 [
-  "00_agenda.md",
-  "01_bases.md",
-  "02_code.md",
-  "03_images.md",
-  "04_animations.md"
+    "00_agenda.md",
+    "01_what_is_docker.md",
+    "02_docker_concepts.md",
+    "03_hands_on.md",
+    "04_patterns.md",
+    "05_multi_containers.md",
+    "06_hands_on.md",
+    "07_bonus.md",
+    "08_thanks.md"
 ]

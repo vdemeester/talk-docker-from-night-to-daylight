@@ -7,4 +7,4 @@ docker run --rm -it -p 8000:8000 \
        -v $PWD/Exercices:/data/Exercices \
        -v $PWD/Slides:/data/Slides \
        -v $PWD/Gruntfile.js:/data/Gruntfile.js \
-       --net=host tz-docker-night-light
+       tz-docker-night-light
