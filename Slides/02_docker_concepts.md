@@ -192,7 +192,7 @@ $ docker run -rm -i test1 # it runs !
 
 ## Let's talk about Volumes
 
-Volumes act as passthroughs to the host filesystems, *bypassing the layers*, meaning :
+Volumes act as passthroughs to the host filesystems, *bypassing the layers*
 
 - I/O performances are the same as the host
 - ``docker commit`` won't put the content of the volume in the image
@@ -209,5 +209,11 @@ It can be used for :
 
 - Sharing a single file (like a socket, …) from host to containers<br/>
 *dockerception is near >_<*
+
+
+
+## Docker provides an API
+
+TODO add example of post
 
 
