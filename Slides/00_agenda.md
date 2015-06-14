@@ -23,11 +23,6 @@ TODO: add image, znk, docker, fun xD PR(s)
 - <em>[Hands-on 2](#/6)</em>
 - <strong>[Bonus : Machine, Swarm & fun](#/7)</strong>
 
+<br /><br />
+- Go to http://hokkaido.local/ or http://{insert-my-ip-here}/ to get and setup your env'
 
-
-## Logistique
-
-* TODO pré-requis & co
-* Horaires
-* Déjeuner & pauses
-* Autres questions ?

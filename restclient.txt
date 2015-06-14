@@ -1,0 +1,36 @@
+# -*- restclient -*-
+#
+# Declare my docker host
+
+:my-host = http://127.0.0.1:2375
+
+# List images
+GET :my-host/images/json
+
+# List containers
+GET :my-host/containers/json
+
+# Create a container
+POST :my-host/containers/json
+Content-Type: application/json
+{
+     "Hostname":"",
+     "User":"",
+     "Memory":0,
+     "MemorySwap":0,
+     "AttachStdin":false,
+     "AttachStdout":true,
+     "AttachStderr":true,
+     "PortSpecs":null,
+     "Privileged": false,
+     "Tty":false,
+     "OpenStdin":false,
+     "StdinOnce":false,
+     "Env":null,
+     "Dns":null,
+     "Image":"jpetazzo/clock",
+     "Volumes":{},
+     "VolumesFrom":"",
+     "WorkingDir":""
+}
+

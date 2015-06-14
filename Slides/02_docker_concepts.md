@@ -9,7 +9,7 @@
 - We're going to talk about
     - Containers
     - Images
-    - Registry
+    - "a tiny bit of" Registry
 
 ![](ressources/giphy_penguin_waw.gif)
 
@@ -26,51 +26,38 @@
 
 ## Containers : Run it
 
-- Run your first
-```bash
-$ docker run -ti ubuntu /bin/bash
-```
+- Run your first<br/>
+``$ docker run -ti ubuntu /bin/bash``
 
-- Create and start
-```bash
-$ docker create jpettazo/clock
-$ docker start -d 0c1
-```
+- Create and start<br/>
+``$ docker create jpettazo/clock``<br/>
+``$ docker start -d 0c1``
 
-- Is it running ?
-```bash
-$ docker ps
-```
+- Is it running ?<br/>
+``$ docker ps<br/>``
 
-- Look at it
-```bash
-$ docker logs -f 0c1
-```
+- Look at it<br/>
+``$ docker logs -f 0c1``
+
 
 
 
 ## Containers : Stop it
 
-- Stop it
-```bash
-$ docker stop 0c1
-# or kill it
-$ docker kill 0c1
-```
+- Stop it<br/>
+``$ docker stop 0c1``<br/>
+``# or kill it``<br/>
+``$ docker kill 0c1``
 
-- Is it still running ?
-```bash
-$ docker ps
-# […]
-# guess not :)
-```
+- Is it still running ?<br/>
+``$ docker ps``<br/>
+``# […]``<br/>
+``# guess not :)``
 
-- But wait, is it gone ?
-```bash
-$ docker ps -a
-# […]
-# guess not :)
-```
+- But wait, is it gone ?<br/>
+``$ docker ps -a``<br/>
+``# […]``<br/>
+``# guess not :)``<br/>
 
 
 
@@ -119,7 +106,7 @@ Now we played a bit with containers, let's convert it to an images
 
 ## More about images
 
-- It can be exported and imported (with layers)<br/>``docker save busybox -o busybox.tar.gz``<br/>``docker load -i busybox.tar.gz``
+- It can be exported and imported (with layers)<br/>``docker save -o busybox.tar.gz busybox``<br/>``docker load -i busybox.tar.gz``
 - It can be imported from a tar file, to a *single* layer<br/>``cat mycontainer.tgz | sudo docker import -``
 - Wait.. a ``mycontainer.tgz``, is it a container export ?<br/>``docker export 0c1 > mycontainer.tgz``
 
@@ -214,6 +201,39 @@ It can be used for :
 
 ## Docker provides an API
 
-TODO add example of post
 
+<pre>
+<strong># List images</strong>
+<em style="font-size: 1.2em;">GET :my-host/images/json</em>
+[
+  {
+    "VirtualSize": 900166722,
+    "RepoTags": [
+      "tz-docker-night-light:latest"
+    ],
+    "Id": "27d3e2db0ce9bb19d6cbc81c992148ab42bb5847a7adb2eb154f01007fa4babf",
+    …
+  },
+  …
+]
+
+<strong># List containers</strong>
+<em style="font-size: 1.2em;">GET :my-host/containers/json</em>
+[
+  {
+    "Status": "Up 57 minutes",
+    "Names": [
+      "/tz-prez"
+    ],
+    …
+  },
+  …
+]
+
+<strong># Create a container</strong>
+<em style="font-size: 1.2em;">POST :my-host/containers/json
+Content-Type: application/json
+{ 'Image': 'jpetazzo/clock', … }</em>
+{"Id":"d1fa1b772481441228b93a26cc7c384a9a08cb79ea5516f101faa89564e9c752"}
+</pre>
 

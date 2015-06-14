@@ -2,11 +2,13 @@
 
 eiuaeiuaei
 
-  #+BEGIN_SRC sh
+  #+BEGIN_SRC sh :results raw
     docker ps
   #+END_SRC
 
   #+RESULTS:
-  | CONTAINER    | ID                           | IMAGE | COMMAND | CREATED | STATUS | PORTS | NAMES |       |                        |               |
-  | b47fb84c8cd0 | tz-docker-night-light:latest | grunt |      26 | hours   | ago    | Up    |    26 | hours | 0.0.0.0:8000->8000/tcp | drunk_ritchie |
+  CONTAINER ID        IMAGE                          COMMAND             CREATED             STATUS              PORTS                    NAMES
+  2170cd5f8794        tz-docker-night-light:latest   "grunt"             About an hour ago   Up About an hour    0.0.0.0:8000->8000/tcp   tz-prez             
+  50cb719a7177        zenika/go-server:latest        "go-wrapper run"    About an hour ago   Up About an hour    0.0.0.0:80->8000/tcp     tz-static           
+
 
