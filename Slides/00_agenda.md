@@ -4,24 +4,24 @@
 
 
 
-## Qui suis-je ?
+## Who am I ? Why am I talking ?
 
 Vincent Demeester
 TODO: add image, znk, docker, fun xD PR(s)
 
 
 
-## Sommaire
+## Agenda
 
 <!-- .slide: id="master-toc" class="toc" -->
 
-- [Docker c'est quoi ?](#/1) 
-- [Concepts : Images & Containers](#/2)
-- <em>[Hands-on 1](#/2/X)</em>
-- [Patterns d'utilisation](#/4)
-- [Multi-container, #dev stack](#/3)
-- <em>[Hands-on 2](#/2/X)</em>
-- <strong>[Bonus : Déploiement, Clusters, …](#/2/X)</strong>
+- [What is Docker ?](#/1) 
+- [Docker concepts](#/2)
+- <em>[Hands-on 1](#/3)</em>
+- [Simple use-cases](#/4)
+- [Multi-container, #dev stack](#/5)
+- <em>[Hands-on 2](#/6)</em>
+- <strong>[Bonus : Machine, Swarm & fun](#/7)</strong>
 
 
 

@@ -1,4 +1,4 @@
-# <span style="font-size: 2em;"><span style="font-weight: bold;">Bonus</span> 🐳</span> <br/> Deployement, Clusters
+# <span style="font-size: 2em;"><span style="font-weight: bold;">Bonus</span> 🐳</span> <br/> Machine, Swarm & fun
 
 ![](ressources/roulette-russe.jpg)
 
@@ -6,10 +6,10 @@
 
 ## Docker Machine
 
-Outil pour créer et gérer des Docker hosts. Distants ou pas.
+Tool to create and provision Docker hosts ; on different providers (local, cloud, …)
 ![](ressources/dockermachine.png)
 
-Providers déjà supportés : <br/>
+Incomplete list of supported providers : <br/>
 *Amazon EC2*, *Microsoft Azure*, *Microsoft Hyper-V*, *DigitalOcean*, *Google Compute Engine*, *OpenStack*, *Rackspace*, *SoftLayer*, *VirtualBox*, *VMware Fusion*, *VMware vCloud Air*, *VMware vSphere*
 
 Notes :
@@ -20,21 +20,21 @@ Nous allons nous en servir pour deployer des containers distants.
 
 
 
-## Déploiement dans le cloud - Demo
+## Deploy in the Cloud — demo
 <br/>
 *GCE*, *Amazon EC2*, *Microsoft Azure*, *Virtualbox*<br/>
 
-1. Configuration du service (operations manuelles)
-2. Creation de la machine
+1. Configure the service (manual)
+2. Create the *machine*
 ```bash
 docker-machine create -d <driver> [DRIVER-SPECIFIC-OPTIONS] <machine-name>
 ```
-3. Activer le flux TCP en entrée (opération manuelle)
-4. Setup du client
+3. (optional) Activate network stuff (open ports & co)
+4. Client setup
 ```bash
 $(docker-machine env)
 ```
-5. Utilisation du client Docker
+5. Use Docker, as usual
 ```bash
 docker run -d zenika/nodejs-sample-app
 ```
@@ -58,14 +58,15 @@ Notes :
 
 ## Docker swarm (2/2)
 
-- Démarre intelligement les conténeurs (scheduler)
-    - ressources disponible vs demandée
-    - mécanisme de filtre (contrainte, affinity, ..)<br/>
+- Schedule containers according to different algorithm
+  - Available resources vs needed
+  - By constraint, affinity, filtering<br/>
     ``-e constraint:storage==ssd``<br/>
     ``-e affinity:container==front``
 
-- Mise en place avec discovery statique
-    - Manager :
+- Use discovery services
+    - supports ``etcd``, ``consul``, …
+    - the simple build-in one (for demo only):
     ``docker run --name swarm-manager -d -P swarm manage nodes://<node_ip1:2375>,<node_ip2:2375>,<node_ip3:2375>``
 
 
@@ -73,9 +74,10 @@ Notes :
 
 ## Multi hôte (version swarm)
 
-- Mettre en place swarm (manager & agent)
-- Faire pointer le client vers swarm (``DOCKER_HOST``, ..)
-- ``$ docker run -d --name postgres postgres``
+- Setup swarm (manager & agents)
+- Setup docker client to talk to the swarm manager (``DOCKER_HOST``, ..)
+- Use Docker, as usual :
+<br/>``$ docker run -d --name postgres postgres``
 <br/>``$ docker run -d -e affinity:container==postgres --name redis redis``
 <br/>``$ docker run -d --link redis:redis --link postgres:db --name backend backend``
 
