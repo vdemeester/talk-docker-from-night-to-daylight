@@ -18,12 +18,6 @@
 
 
 
-## Lifecycle
-
-![](ressources/decouverte-conteneur-workflow.png)
-
-
-
 ## Containers : Run it
 
 - Run your first<br/>
@@ -174,6 +168,12 @@ $ docker run -rm -i test1 # it runs !
 
 * Each step will become a layer, even for meta-datas
 * It's is reproductible, let's feed your continuous integration system !
+
+
+
+## Reminder: Lifecycle
+
+![](ressources/decouverte-conteneur-workflow.png)
 
 
 
