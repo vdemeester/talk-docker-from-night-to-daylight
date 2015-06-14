@@ -6,8 +6,25 @@
 
 ## Who am I ? Why am I talking ?
 
-Vincent Demeester
-TODO: add image, znk, docker, fun xD PR(s)
+
+<figure style="display: block; float: left; margin: 30px 0; width: 40%">
+    <img src="ressources/me.png" alt="It's me !" style="margin: auto;"/><br/><figcaption><strong>Vincent Demeester</strong></figcaption>
+</figure>
+<figure style="display: block; float: left; margin: 30px 0; width: 60%">
+    <img src="ressources/me-contribs-fun.png" alt="It's me !" style="margin: auto;"/><br/><figcaption>Small Docker contributor<br/>Docker certified trainer<br/><span style="font-size: 2em;color: darkblue;">🐳</span></figcaption>
+</figure>
+
+<hr style="clear: left; border: 1px solid white;"/>
+
+<!-- .element: style="display: block; float:left; margin:30px 0; width: 80%;" -->
+- I'm a developer, devops, craftman — <em>I 💓 & work @Zenika</em><br/>
+- I 💓 GNU/Linux & GNU/Emacs<br/>
+- I 💓 Free-software !<br />
+- I 💓 Java, Go, Python<br />
+- And I 💓 unicode, 🚴 & 🚶
+
+<!-- .element: style="display: block; float:left; margin:120px 0; width: 20%;" -->
+<span style="font-size: 5em;color:darkgreen;">🐸</span><br/>
 
 
 
