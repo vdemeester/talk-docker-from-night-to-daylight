@@ -41,5 +41,5 @@
 - <strong>[Bonus : Machine, Swarm & fun](#/7)</strong>
 
 <br /><br />
-- Go to http://hokkaido.local/ or http://{insert-my-ip-here}/ to get and setup your env'
+<strong>http://hokkaido.local/</strong> or <strong>http://{insert-my-ip-here}/</strong> <br />to get all you need setup your environment.
 

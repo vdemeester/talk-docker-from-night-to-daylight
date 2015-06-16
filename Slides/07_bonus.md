@@ -20,7 +20,7 @@ Nous allons nous en servir pour deployer des containers distants.
 
 
 
-## Deploy in the Cloud — demo
+## Deploy in the Cloud
 <br/>
 *GCE*, *Amazon EC2*, *Microsoft Azure*, *Virtualbox*<br/>
 
@@ -94,6 +94,8 @@ Notes :
 
 
 
-## For the real fun…
+## Demo-time o/
 
-… We are going to deploy a change we made on a swarm cluster, with a bare git commit :D
+![](ressources/giphy_penguin_shakira.gif)
+
+

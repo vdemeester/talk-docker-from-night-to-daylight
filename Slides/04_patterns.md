@@ -72,13 +72,10 @@ Notes :
 
 ## For the fun : no more package manager
 
-- Link to @jfrazelle talk
-- You want chrome ? there an image for that : ``docker run jessfraz/chrome``
-- You don't want Chrome to eat all your memory ?<br/>
-``docker run -m 512m \``<br/>
-``       # […]``<br/>
-``       jessfraz/chrome``
-- You want spotify ? there an image for that :
-- You want to run IntelliJ ? there an image for that :
+- [Willy Wonka of Containers](https://www.youtube.com/watch?v=GsLZz8cZCzc&list=PLcHZXHMeDzxUhStxW31CtiMcCbrgfrzuH&index=1) by [Jessie Frazelle](https://jessfraz.com/)
+- You want chrome ? there an image for that : ``docker run jess/chrome``
+- You want spotify ? there an image for that : ``docker run --device /dev/snd […] jess/spotify``.
+- You want to run IntelliJ ? you can create an image for that.
 <br /><br /><br />
-<em>I could go on, but guess you got it ;-)</em>
+
+![](ressources/giphy_minions2.gif)

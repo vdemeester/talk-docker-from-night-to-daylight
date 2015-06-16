@@ -11,16 +11,16 @@ Faire tourner *flask by example* grâce à docker-compose.
 
 
 
-## À votre disposition
+## Some 
 
-- Les différentes sources se trouve ici : http://github.com/zenika/..
-    - ``frontend`` & ``backend`` : source de notre application
-    - ``docker-compose.yml`` : fichier à compléter
-- Images sur lesquelles se baser
-    - postgres (officielle)
-    - redis (officielle)
-    - backend (basé sur python)
-    - frontend (basé sur python, même container que backend ^_^'')
+- Sources are available here : https://hokkaido.local/hands-on-2.tgz
+    - ``flask-by-example`` : application sources<br />``git clone https://github.com/vdemeester/flask-by-example``
+    - ``docker-compose.yml`` : file to complete
+- Base images to use
+    - postgres (official)
+    - redis (official)
+    - backend (based on python)
+    - frontend (based on python, will be almost the same image as backend ^_^'')
 
 
 

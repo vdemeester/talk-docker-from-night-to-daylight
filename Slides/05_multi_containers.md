@@ -110,6 +110,8 @@ docker-compose.yml
 web:
     build: .
     command: python app.py
+    enviroment:
+    - LANG=C
     links:
     - db
     ports:
@@ -124,8 +126,7 @@ mycontainer:
     user: me
 db:
     image: postgres
-    environment:
-    - LANG=C
+    env_file: .env
 ```
 
 Notes :

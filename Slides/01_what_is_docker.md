@@ -8,21 +8,23 @@
 ## Docker timeline
 
 <ul class="fragment">
-<li>**mars 2013 :** dotCloud open-source the docker engine</li>
-<li>**aout 2013 :** eBay, Uber, Cloudfare use Docker</li>
-<li>**octobre 2013 :** DotCloud becomes Docker Inc.</li>
+<li>**march 2013 :** dotCloud open-source the docker engine</li>
+<li>**october 2013 :** DotCloud becomes Docker Inc.</li>
 <li>[…]</li>
-<li>**octobre 2014:** Partnership with Microsoft</li>
-<li>**2015:** Working on Windows & FreeBSD port</li>
+<li>**october 2014:** Partnership with Microsoft</li>
+<li>**june 2015:** Working on Windows & FreeBSD port, new network stack (1.7.0)</li>
 </ul>
+<hr style="border: 1px solid white;">
 <ul class="fragment">
-<hr>
 <li>150+ Docker Meetup dans 50 pays</li>
 <li>22,000+ Github stars</li>
 <li>100M+ Docker Engine downloads</li>
 <li>960+ contributors</li>
 <li>A release every 2 months</li>
 </ul>
+
+<!-- .element: style="display: block; float:right; margin:120px 0; width: 20%;" -->
+<span style="font-size: 5em;color:blue;">🐳</span><br/>
 
 
 
@@ -87,6 +89,6 @@
 ## Docker vs Virtual Machine
 
 <br/>
-Containers are **NOT** VMs
+Containers are **NOT** VMs !! <br />Repeat after me : <em>Containers are <u>NOT</u> VMs</em>.
 
 ![](ressources/vm-vs-docker.png)
