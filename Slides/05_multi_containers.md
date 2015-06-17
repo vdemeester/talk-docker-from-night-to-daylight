@@ -85,11 +85,11 @@ Notes :
 
 
 
-## Outils
+## Tools
 
 - *Docker-compose* a.k.a **fig** (python, conf. yaml)
     - Official support from Docker Inc.
-
+<br /><br />
 - Crane (Go, conf. json/yaml)
 - Maestro (Python, conf. yaml)
 - Decking (Node, conf. json)
@@ -103,9 +103,8 @@ Notes :
 
 
 
-## docker-compose : configuration
+## docker-compose.yml
 
-docker-compose.yml
 ```
 web:
     build: .
@@ -134,7 +133,7 @@ Notes :
 
 
 
-## docker-compose (2/2) : commands
+## docker-compose commands
 
 - ``up`` : start one or all services (containers)
 - ``build`` : build the images

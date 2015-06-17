@@ -5,13 +5,13 @@
 
 
 ## Your mission … again !!
-Faire tourner *flask by example* grâce à docker-compose.
+Run *flask by example* on you laptop, thanks to docker-compose.
 
 ![](ressources/flask-redis-postgres.png)
 
 
 
-## Some 
+## Detail of the mission
 
 - Sources are available here : https://hokkaido.local/hands-on-2.tgz
     - ``flask-by-example`` : application sources<br />``git clone https://github.com/vdemeester/flask-by-example``

@@ -80,7 +80,7 @@
 
 
 
-## Architecture: Client / Serveur
+## Architecture: Client/Server
 
 ![](ressources/docker-architecture.svg)
 

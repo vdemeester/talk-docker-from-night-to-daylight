@@ -93,9 +93,3 @@ Notes :
   backend
 
 
-
-## Demo-time o/
-
-![](ressources/giphy_penguin_shakira.gif)
-
-
