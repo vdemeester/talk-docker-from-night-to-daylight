@@ -72,7 +72,7 @@ Notes :
 
 
 
-## Multi hôte (version swarm)
+## Play with a swarm cluster
 
 - Setup swarm (manager & agents)
 - Setup docker client to talk to the swarm manager (``DOCKER_HOST``, ..)
@@ -80,6 +80,7 @@ Notes :
 <br/>``$ docker run -d --name postgres postgres``
 <br/>``$ docker run -d -e affinity:container==postgres --name redis redis``
 <br/>``$ docker run -d --link redis:redis --link postgres:db --name backend backend``
+<br/>``$ docker run -d --name frontend frontend``
 
 ![](ressources/giphy_minions1.gif)
 
