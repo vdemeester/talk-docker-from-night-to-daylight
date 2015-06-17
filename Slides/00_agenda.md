@@ -18,7 +18,7 @@
 
 <!-- .element: style="display: block; float:left; margin:30px 0; width: 80%;" -->
 - I'm a developer, devops, craftman — <em>I 💓 & work @Zenika</em><br/>
-- I 💓 GNU/Linux & GNU/Emacs<br/>
+- I 💓 GNU/Linux, Docker & GNU/Emacs<br/>
 - I 💓 Free-software !<br />
 - I 💓 Java, Go, Python<br />
 - And I 💓 unicode, 🚴 & 🚶
