@@ -17,7 +17,7 @@
 <hr style="clear: left; border: 1px solid white;"/>
 
 <!-- .element: style="display: block; float:left; margin:30px 0; width: 80%;" -->
-- I'm a developer, devops, craftman — <em>I 💓 & work @Zenika</em><br/>
+- I'm a developer, devops, craftsman — <em>I 💓 & work @Zenika</em><br/>
 - I 💓 GNU/Linux, Docker & GNU/Emacs<br/>
 - I 💓 Free-software !<br />
 - I 💓 Java, Go, Python and much more<br />
