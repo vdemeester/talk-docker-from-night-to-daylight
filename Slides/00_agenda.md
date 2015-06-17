@@ -20,7 +20,7 @@
 - I'm a developer, devops, craftman — <em>I 💓 & work @Zenika</em><br/>
 - I 💓 GNU/Linux, Docker & GNU/Emacs<br/>
 - I 💓 Free-software !<br />
-- I 💓 Java, Go, Python<br />
+- I 💓 Java, Go, Python and much more<br />
 - And I 💓 unicode, 🚴 & 🚶
 
 <!-- .element: style="display: block; float:left; margin:120px 0; width: 20%;" -->
