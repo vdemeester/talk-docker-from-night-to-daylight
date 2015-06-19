@@ -1,7 +1,7 @@
 #!/bin/sh
 # Script to populate static folder with the required stuff (images & co)
 
-IMAGES="ubuntu fedora jpetazzo/clock busybox"
+IMAGES="ubuntu fedora jpetazzo/clock busybox redis python java"
 
 echo "Get the required images"
 
