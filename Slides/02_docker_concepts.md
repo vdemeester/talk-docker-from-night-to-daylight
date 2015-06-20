@@ -28,7 +28,7 @@
 ``$ docker start -d 0c1``
 
 - Is it running ?<br/>
-``$ docker ps<br/>``
+``$ docker ps``<br/>
 
 - Look at it<br/>
 ``$ docker logs -f 0c1``
