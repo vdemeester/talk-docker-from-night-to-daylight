@@ -1,14 +1,945 @@
 * Litterate demo
 
-eiuaeiuaei
+  Here is an executable org-mode file (with org-babel). There is just no
+  /interactive/ commands..
 
-  #+BEGIN_SRC sh :results raw
+** Concepts
+
+   Create the docker container…
+
+   #+BEGIN_SRC sh :results raw
+     docker create jpetazzo/clock
+   #+END_SRC
+
+   #+RESULTS:
+   f6c9bb44bb661d3b09eb7ce358fe13f9e641c29e82f9a713053d8d060fd32f29
+
+   … and run it
+
+
+   #+BEGIN_SRC sh :result raw
+  docker start f6c9bb44bb661d3b09eb7ce358fe13f9e641c29e82f9a713053d8d060fd32f29
+   #+END_SRC
+
+   #+RESULTS:
+: f6c9bb44bb661d3b09eb7ce358fe13f9e641c29e82f9a713053d8d060fd32f29
+
+   Is it running ?
+
+   #+BEGIN_SRC sh :results raw
     docker ps
-  #+END_SRC
+   #+END_SRC
 
-  #+RESULTS:
-  CONTAINER ID        IMAGE                          COMMAND             CREATED             STATUS              PORTS                    NAMES
-  2170cd5f8794        tz-docker-night-light:latest   "grunt"             About an hour ago   Up About an hour    0.0.0.0:8000->8000/tcp   tz-prez             
-  50cb719a7177        zenika/go-server:latest        "go-wrapper run"    About an hour ago   Up About an hour    0.0.0.0:80->8000/tcp     tz-static           
+   #+RESULTS:
+   CONTAINER ID        IMAGE                                       COMMAND                CREATED             STATUS              PORTS                    NAMES
+   f6c9bb44bb66        jpetazzo/clock:latest                       "/bin/sh -c 'while d   2 minutes ago       Up 45 seconds                                cranky_mestorf
+
+   Show some log (but not in follow mode in here xD)
+
+   #+BEGIN_SRC sh :results raw
+    docker logs f6c
+   #+END_SRC
+
+   #+RESULTS:
+   Sun Jun 21 09:09:26 UTC 2015
+   Sun Jun 21 09:09:27 UTC 2015
+   Sun Jun 21 09:09:28 UTC 2015
+   Sun Jun 21 09:09:29 UTC 2015
+   Sun Jun 21 09:09:30 UTC 2015
+   Sun Jun 21 09:09:31 UTC 2015
+   Sun Jun 21 09:09:32 UTC 2015
+   Sun Jun 21 09:09:33 UTC 2015
+   Sun Jun 21 09:09:34 UTC 2015
+   Sun Jun 21 09:09:35 UTC 2015
+   Sun Jun 21 09:09:36 UTC 2015
+   Sun Jun 21 09:09:37 UTC 2015
+
+   And we will stop it
 
 
+   #+BEGIN_SRC sh :results raw
+  docker stop f6c
+   #+END_SRC
+
+   #+RESULTS:
+   f6c
+
+   Is it still running ?
+
+   #+BEGIN_SRC sh :results raw
+    docker ps
+   #+END_SRC
+
+   #+RESULTS:
+   CONTAINER ID        IMAGE                                       COMMAND                CREATED             STATUS              PORTS                    NAMES
+   f6c9bb44bb66        jpetazzo/clock:latest                       "/bin/sh -c 'while d   2 minutes ago       Up 45 seconds                                cranky_mestorf
+
+   But it's still there :)
+
+   #+BEGIN_SRC sh :results raw
+    docker ps -a
+   #+END_SRC
+
+   #+RESULTS:
+   CONTAINER ID        IMAGE                                                                     COMMAND                CREATED             STATUS                            PORTS                    NAMES
+   f6c9bb44bb66        jpetazzo/clock:latest                                                     "/bin/sh -c 'while d   4 minutes ago       Exited (137) About a minute ago                            cranky_mestorf
+   68ef41a9b8b4        training/docker-fundamentals-image:latest                                 "showoff serve"        14 hours ago        Up 14 hours                       0.0.0.0:9090->9090/tcp   showoff
+   ebcf91eb9751        tz-docker-night-light:latest                                              "grunt"                24 hours ago        Up 24 hours                       0.0.0.0:8000->8000/tcp   tz-prez
+
+   We could start it again :) But we will just remove it
+
+
+   #+BEGIN_SRC sh :results raw
+  docker rm f6c
+   #+END_SRC
+
+   #+RESULTS:
+   f6c
+
+   And now it's gone
+
+   #+BEGIN_SRC sh :results raw
+    docker ps -a
+   #+END_SRC
+
+   #+RESULTS:
+   CONTAINER ID        IMAGE                                                                     COMMAND                CREATED             STATUS                            PORTS                    NAMES
+   68ef41a9b8b4        training/docker-fundamentals-image:latest                                 "showoff serve"        14 hours ago        Up 14 hours                       0.0.0.0:9090->9090/tcp   showoff
+   ebcf91eb9751        tz-docker-night-light:latest                                              "grunt"                24 hours ago        Up 24 hours                       0.0.0.0:8000->8000/tcp   tz-prez
+
+
+   #+BEGIN_SRC sh :results raw
+    docker inspect ebcf91eb9751
+   #+END_SRC
+
+   #+RESULTS:
+   [{
+   "AppArmorProfile": "",
+   "Args": [],
+   "Config": {
+   "AttachStderr": false,
+   "AttachStdin": false,
+   "AttachStdout": false,
+   "Cmd": null,
+   "CpuShares": 0,
+   "Cpuset": "",
+   "Domainname": "",
+   "Entrypoint": [
+   "grunt"
+   ],
+   "Env": [
+   "PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+   "NODE_VERSION=0.12.3",
+   "NPM_VERSION=2.10.0"
+   ],
+   "ExposedPorts": {
+   "8000/tcp": {}
+   },
+   "Hostname": "ebcf91eb9751",
+   "Image": "tz-docker-night-light",
+   "Labels": {},
+   "MacAddress": "",
+   "Memory": 0,
+   "MemorySwap": 0,
+   "NetworkDisabled": false,
+   "OnBuild": null,
+   "OpenStdin": false,
+   "PortSpecs": null,
+   "StdinOnce": false,
+   "Tty": false,
+   "User": "",
+   "Volumes": null,
+   "WorkingDir": "/data"
+   },
+   "Created": "2015-06-20T08:45:32.474457723Z",
+   "Driver": "btrfs",
+   "ExecDriver": "native-0.2",
+   "ExecIDs": null,
+   "HostConfig": {
+   "Binds": [
+   "/home/vincent/src/zenika/talks/201506-tz-docker-from-night-to-daylight/CahierExercices:/data/CahierExercices",
+   "/home/vincent/src/zenika/talks/201506-tz-docker-from-night-to-daylight/Exercices:/data/Exercices",
+   "/home/vincent/src/zenika/talks/201506-tz-docker-from-night-to-daylight/Slides:/data/Slides",
+   "/home/vincent/src/zenika/talks/201506-tz-docker-from-night-to-daylight/Gruntfile.js:/data/Gruntfile.js"
+   ],
+   "CapAdd": null,
+   "CapDrop": null,
+   "CgroupParent": "",
+   "ContainerIDFile": "",
+   "CpuShares": 0,
+   "CpusetCpus": "",
+   "Devices": [],
+   "Dns": null,
+   "DnsSearch": null,
+   "ExtraHosts": null,
+   "IpcMode": "",
+   "Links": null,
+   "LogConfig": {
+   "Config": null,
+   "Type": "json-file"
+   },
+   "LxcConf": [],
+   "Memory": 0,
+   "MemorySwap": 0,
+   "NetworkMode": "bridge",
+   "PidMode": "",
+   "PortBindings": {
+   "8000/tcp": [
+   {
+   "HostIp": "",
+   "HostPort": "8000"
+   }
+   ]
+   },
+   "Privileged": false,
+   "PublishAllPorts": false,
+   "ReadonlyRootfs": false,
+   "RestartPolicy": {
+   "MaximumRetryCount": 0,
+   "Name": "no"
+   },
+   "SecurityOpt": null,
+   "Ulimits": null,
+   "VolumesFrom": null
+   },
+   "HostnamePath": "/var/lib/docker/containers/ebcf91eb9751d3e5f359937693c96718f0b61e00b2410dbfa2585d72e8360e42/hostname",
+   "HostsPath": "/var/lib/docker/containers/ebcf91eb9751d3e5f359937693c96718f0b61e00b2410dbfa2585d72e8360e42/hosts",
+   "Id": "ebcf91eb9751d3e5f359937693c96718f0b61e00b2410dbfa2585d72e8360e42",
+   "Image": "554c31b44f3eb86edff83cab8c5fa472fdc9dfd5cd8476e40a56d15fb266b1d3",
+   "LogPath": "/var/lib/docker/containers/ebcf91eb9751d3e5f359937693c96718f0b61e00b2410dbfa2585d72e8360e42/ebcf91eb9751d3e5f359937693c96718f0b61e00b2410dbfa2585d72e8360e42-json.log",
+   "MountLabel": "",
+   "Name": "/tz-prez",
+   "NetworkSettings": {
+   "Bridge": "docker0",
+   "Gateway": "172.17.42.1",
+   "GlobalIPv6Address": "",
+   "GlobalIPv6PrefixLen": 0,
+   "IPAddress": "172.17.0.23",
+   "IPPrefixLen": 16,
+   "IPv6Gateway": "",
+   "LinkLocalIPv6Address": "fe80::42:acff:fe11:17",
+   "LinkLocalIPv6PrefixLen": 64,
+   "MacAddress": "02:42:ac:11:00:17",
+   "PortMapping": null,
+   "Ports": {
+   "8000/tcp": [
+   {
+   "HostIp": "0.0.0.0",
+   "HostPort": "8000"
+   }
+   ]
+   }
+   },
+   "Path": "grunt",
+   "ProcessLabel": "",
+   "ResolvConfPath": "/var/lib/docker/containers/ebcf91eb9751d3e5f359937693c96718f0b61e00b2410dbfa2585d72e8360e42/resolv.conf",
+   "RestartCount": 0,
+   "State": {
+   "Dead": false,
+   "Error": "",
+   "ExitCode": 0,
+   "FinishedAt": "0001-01-01T00:00:00Z",
+   "OOMKilled": false,
+   "Paused": false,
+   "Pid": 27087,
+   "Restarting": false,
+   "Running": true,
+   "StartedAt": "2015-06-20T08:45:33.734944346Z"
+   },
+   "Volumes": {
+   "/data/CahierExercices": "/home/vincent/src/zenika/talks/201506-tz-docker-from-night-to-daylight/CahierExercices",
+   "/data/Exercices": "/home/vincent/src/zenika/talks/201506-tz-docker-from-night-to-daylight/Exercices",
+   "/data/Gruntfile.js": "/home/vincent/src/zenika/talks/201506-tz-docker-from-night-to-daylight/Gruntfile.js",
+   "/data/Slides": "/home/vincent/src/zenika/talks/201506-tz-docker-from-night-to-daylight/Slides"
+   },
+   "VolumesRW": {
+   "/data/CahierExercices": true,
+   "/data/Exercices": true,
+   "/data/Gruntfile.js": true,
+   "/data/Slides": true
+   }
+   }
+   ]
+
+   But if I just want the ip, I can use /format/.
+
+   #+BEGIN_SRC sh :results raw
+    docker inspect -format '{{.NetworkSettings.IPAddress}}' 68ef41a9b8b4
+   #+END_SRC
+
+   #+RESULTS:
+   172.17.0.36
+
+   Let see what ports are exposed..
+
+   #+BEGIN_SRC sh :results raw
+    docker port 68ef41a9b8b4
+   #+END_SRC
+
+   #+RESULTS:
+   9090/tcp -> 0.0.0.0:9090
+
+   Let's now create a container, modify it.
+
+
+   #+BEGIN_SRC sh :results raw
+  docker run ubuntu touch /exec-touch
+  # Get the ID
+  docker ps -al
+   #+END_SRC
+
+   #+RESULTS:
+   CONTAINER ID        IMAGE               COMMAND               CREATED             STATUS                              PORTS               NAMES
+   fddda90ebaac        ubuntu:latest       "touch /exec-touch"   1 seconds ago       Exited (0) Less than a second ago                       goofy_thompson
+
+   Now let see what changed
+
+   #+BEGIN_SRC sh :results raw
+  docker diff fdd
+   #+END_SRC
+
+   #+RESULTS:
+   A /exec-touch
+
+   Yeah, now let's commit :)
+
+   #+BEGIN_SRC sh :results raw
+  docker commit fdd
+   #+END_SRC
+
+   #+RESULTS:
+   ce39ed8a8a642fcfeac56d9fe85b5b5eab8780aabbe12a19fa076e5864a2afbe
+
+   And tag it..
+
+   #+BEGIN_SRC sh :results raw
+  docker tag ce39ed8a8a642fcfeac56d9fe85b5b5eab8780aabbe12a19fa076e5864a2afbe myimage
+   #+END_SRC
+
+   #+RESULTS:
+
+   And even tag it like git
+
+   #+BEGIN_SRC sh :results raw
+  docker tag myimage myimage:v1
+   #+END_SRC
+
+   #+RESULTS:
+
+   Let's see images
+
+   #+BEGIN_SRC sh :results raw
+  docker images
+   #+END_SRC
+
+   #+RESULTS:
+   REPOSITORY                             TAG                               IMAGE ID            CREATED              VIRTUAL SIZE
+   myimage                                latest                            ce39ed8a8a64        About a minute ago   188.3 MB
+   myimage                                v1                                ce39ed8a8a64        About a minute ago   188.3 MB
+
+*** Dockerfile
+
+    Let's build an image, a little bit simplier than the one in the slides
+
+    #+BEGIN_SRC sh :results raw
+  docker build -t vdemeester/mydumbimage - <<EOF
+  FROM debian:jessie
+  MAINTAINER John Doe <john@doe.com>
+
+  RUN ["apt-get", "-y", "update"]
+  RUN apt-get -y install git
+
+  ADD http://bit.ly/1HyjEeA /whale.gif
+
+  EXPOSE 8080
+  VOLUME ["/data"]
+
+  ENV IN_DOCKER=y
+  WORKDIR /
+  CMD ["http://github.com/vdemeester/webapp"]
+
+  ENTRYPOINT ["/usr/bin/git", "clone"]
+  ONBUILD RUN touch /tmp/onbuild
+  EOF
+    #+END_SRC
+
+    #+RESULTS:
+    Sending build context to Docker daemon 2.048 kB
+    Sending build context to Docker daemon
+    Step 0 : FROM debian:jessie
+    ---> 0e30e84e9513
+    Step 1 : MAINTAINER John Doe <john@doe.com>
+    ---> Running in 7e6da1be53af
+    ---> 101e547f3068
+    Removing intermediate container 7e6da1be53af
+    Step 2 : RUN apt-get -y update
+    ---> Running in f54d5399504c
+    Get:1 http://security.debian.org jessie/updates InRelease [63.1 kB]
+    Get:2 http://http.debian.net jessie InRelease [134 kB]
+    Get:3 http://http.debian.net jessie-updates InRelease [126 kB]
+    Get:4 http://security.debian.org jessie/updates/main amd64 Packages [130 kB]
+    Get:5 http://http.debian.net jessie/main amd64 Packages [9038 kB]
+    Get:6 http://http.debian.net jessie-updates/main amd64 Packages [3616 B]
+    Fetched 9494 kB in 20s (466 kB/s)
+    Reading package lists...
+    ---> ba8259714db0
+    Removing intermediate container f54d5399504c
+    Step 3 : RUN apt-get -y install git
+    ---> Running in baa66fcd54f6
+    Reading package lists...
+    Building dependency tree...
+    The following extra packages will be installed:
+    ca-certificates git-man krb5-locales less libalgorithm-c3-perl
+    libarchive-extract-perl libbsd0 libcgi-fast-perl libcgi-pm-perl
+    libclass-c3-perl libclass-c3-xs-perl libcpan-meta-perl libcurl3-gnutls
+    libdata-optlist-perl libdata-section-perl libedit2 liberror-perl libexpat1
+    libfcgi-perl libffi6 libgdbm3 libgmp10 libgnutls-deb0-28 libgssapi-krb5-2
+    libhogweed2 libidn11 libk5crypto3 libkeyutils1 libkrb5-3 libkrb5support0
+    libldap-2.4-2 liblog-message-perl liblog-message-simple-perl
+    libmodule-build-perl libmodule-pluggable-perl libmodule-signature-perl
+    libmro-compat-perl libnettle4 libp11-kit0 libpackage-constants-perl
+    libparams-util-perl libpod-latex-perl libpod-readme-perl libpopt0
+    libregexp-common-perl librtmp1 libsasl2-2 libsasl2-modules
+    libsasl2-modules-db libsoftware-license-perl libssh2-1 libssl1.0.0
+    libsub-exporter-perl libsub-install-perl libtasn1-6 libterm-ui-perl
+    libtext-soundex-perl libtext-template-perl libx11-6 libx11-data libxau6
+    libxcb1 libxdmcp6 libxext6 libxmuu1 openssh-client openssl patch perl
+    perl-base perl-modules rename rsync xauth
+    Suggested packages:
+    gettext-base git-daemon-run git-daemon-sysvinit git-doc git-el git-email
+    git-gui gitk gitweb git-arch git-cvs git-mediawiki git-svn gnutls-bin
+    krb5-doc krb5-user libsasl2-modules-otp libsasl2-modules-ldap
+    libsasl2-modules-sql libsasl2-modules-gssapi-mit
+    libsasl2-modules-gssapi-heimdal ssh-askpass libpam-ssh keychain monkeysphere
+    ed diffutils-doc perl-doc libterm-readline-gnu-perl
+    libterm-readline-perl-perl make libb-lint-perl libcpanplus-dist-build-perl
+    libcpanplus-perl libfile-checktree-perl libobject-accessor-perl
+    openssh-server
+    Recommended packages:
+    ssh-client libarchive-tar-perl
+    The following NEW packages will be installed:
+    ca-certificates git git-man krb5-locales less libalgorithm-c3-perl
+    libarchive-extract-perl libbsd0 libcgi-fast-perl libcgi-pm-perl
+    libclass-c3-perl libclass-c3-xs-perl libcpan-meta-perl libcurl3-gnutls
+    libdata-optlist-perl libdata-section-perl libedit2 liberror-perl libexpat1
+    libfcgi-perl libffi6 libgdbm3 libgmp10 libgnutls-deb0-28 libgssapi-krb5-2
+    libhogweed2 libidn11 libk5crypto3 libkeyutils1 libkrb5-3 libkrb5support0
+    libldap-2.4-2 liblog-message-perl liblog-message-simple-perl
+    libmodule-build-perl libmodule-pluggable-perl libmodule-signature-perl
+    libmro-compat-perl libnettle4 libp11-kit0 libpackage-constants-perl
+    libparams-util-perl libpod-latex-perl libpod-readme-perl libpopt0
+    libregexp-common-perl librtmp1 libsasl2-2 libsasl2-modules
+    libsasl2-modules-db libsoftware-license-perl libssh2-1 libssl1.0.0
+    libsub-exporter-perl libsub-install-perl libtasn1-6 libterm-ui-perl
+    libtext-soundex-perl libtext-template-perl libx11-6 libx11-data libxau6
+    libxcb1 libxdmcp6 libxext6 libxmuu1 openssh-client openssl patch perl
+    perl-modules rename rsync xauth
+    The following packages will be upgraded:
+    perl-base
+    1 upgraded, 74 newly installed, 0 to remove and 47 not upgraded.
+    Need to get 23.0 MB of archives.
+    After this operation, 85.4 MB of additional disk space will be used.
+    Get:1 http://security.debian.org/ jessie/updates/main libssl1.0.0 amd64 1.0.1k-3+deb8u1 [1038 kB]
+    Get:2 http://http.debian.net/debian/ jessie/main perl-base amd64 5.20.2-3+deb8u1 [1220 kB]
+    Get:3 http://security.debian.org/ jessie/updates/main openssl amd64 1.0.1k-3+deb8u1 [677 kB]
+    Get:4 http://http.debian.net/debian/ jessie/main libgdbm3 amd64 1.8.3-13.1 [30.0 kB]
+    Get:5 http://http.debian.net/debian/ jessie/main libpopt0 amd64 1.16-10 [49.2 kB]
+    Get:6 http://http.debian.net/debian/ jessie/main libbsd0 amd64 0.7.0-2 [67.9 kB]
+    Get:7 http://http.debian.net/debian/ jessie/main libedit2 amd64 3.1-20140620-2 [85.1 kB]
+    Get:8 http://http.debian.net/debian/ jessie/main libgmp10 amd64 2:6.0.0+dfsg-6 [253 kB]
+    Get:9 http://http.debian.net/debian/ jessie/main libnettle4 amd64 2.7.1-5 [176 kB]
+    Get:10 http://http.debian.net/debian/ jessie/main libhogweed2 amd64 2.7.1-5 [125 kB]
+    Get:11 http://http.debian.net/debian/ jessie/main libffi6 amd64 3.1-2+b2 [20.1 kB]
+    Get:12 http://http.debian.net/debian/ jessie/main libp11-kit0 amd64 0.20.7-1 [81.2 kB]
+    Get:13 http://http.debian.net/debian/ jessie/main libtasn1-6 amd64 4.2-3+deb8u1 [48.9 kB]
+    Get:14 http://http.debian.net/debian/ jessie/main libgnutls-deb0-28 amd64 3.3.8-6+deb8u1 [694 kB]
+    Get:15 http://http.debian.net/debian/ jessie/main libkeyutils1 amd64 1.5.9-5+b1 [12.0 kB]
+    Get:16 http://http.debian.net/debian/ jessie/main libkrb5support0 amd64 1.12.1+dfsg-19 [58.5 kB]
+    Get:17 http://http.debian.net/debian/ jessie/main libk5crypto3 amd64 1.12.1+dfsg-19 [115 kB]
+    Get:18 http://http.debian.net/debian/ jessie/main libkrb5-3 amd64 1.12.1+dfsg-19 [303 kB]
+    Get:19 http://http.debian.net/debian/ jessie/main libgssapi-krb5-2 amd64 1.12.1+dfsg-19 [150 kB]
+    Get:20 http://http.debian.net/debian/ jessie/main libidn11 amd64 1.29-1+b2 [136 kB]
+    Get:21 http://http.debian.net/debian/ jessie/main libsasl2-modules-db amd64 2.1.26.dfsg1-13 [67.0 kB]
+    Get:22 http://http.debian.net/debian/ jessie/main libsasl2-2 amd64 2.1.26.dfsg1-13 [104 kB]
+    Get:23 http://http.debian.net/debian/ jessie/main libldap-2.4-2 amd64 2.4.40+dfsg-1 [218 kB]
+    Get:24 http://http.debian.net/debian/ jessie/main perl-modules all 5.20.2-3+deb8u1 [2551 kB]
+    Get:25 http://http.debian.net/debian/ jessie/main perl amd64 5.20.2-3+deb8u1 [2629 kB]
+    Get:26 http://http.debian.net/debian/ jessie/main librtmp1 amd64 2.4+20150115.gita107cef-1 [59.8 kB]
+    Get:27 http://http.debian.net/debian/ jessie/main libssh2-1 amd64 1.4.3-4.1 [125 kB]
+    Get:28 http://http.debian.net/debian/ jessie/main libcurl3-gnutls amd64 7.38.0-4+deb8u2 [251 kB]
+    Get:29 http://http.debian.net/debian/ jessie/main libexpat1 amd64 2.1.0-6+b3 [80.3 kB]
+    Get:30 http://http.debian.net/debian/ jessie/main libxau6 amd64 1:1.0.8-1 [20.7 kB]
+    Get:31 http://http.debian.net/debian/ jessie/main libxdmcp6 amd64 1:1.1.1-1+b1 [24.9 kB]
+    Get:32 http://http.debian.net/debian/ jessie/main libxcb1 amd64 1.10-3+b1 [44.4 kB]
+    Get:33 http://http.debian.net/debian/ jessie/main libx11-data all 2:1.6.2-3 [126 kB]
+    Get:34 http://http.debian.net/debian/ jessie/main libx11-6 amd64 2:1.6.2-3 [729 kB]
+    Get:35 http://http.debian.net/debian/ jessie/main libxext6 amd64 2:1.3.3-1 [52.7 kB]
+    Get:36 http://http.debian.net/debian/ jessie/main libxmuu1 amd64 2:1.1.2-1 [23.3 kB]
+    Get:37 http://http.debian.net/debian/ jessie/main less amd64 458-3 [124 kB]
+    Get:38 http://http.debian.net/debian/ jessie/main krb5-locales all 1.12.1+dfsg-19 [2648 kB]
+    Get:39 http://http.debian.net/debian/ jessie/main openssh-client amd64 1:6.7p1-5 [691 kB]
+    Get:40 http://http.debian.net/debian/ jessie/main patch amd64 2.7.5-1 [109 kB]
+    Get:41 http://http.debian.net/debian/ jessie/main ca-certificates all 20141019 [200 kB]
+    Get:42 http://http.debian.net/debian/ jessie/main liberror-perl all 0.17-1.1 [22.4 kB]
+    Get:43 http://http.debian.net/debian/ jessie/main git-man all 1:2.1.4-2.1 [1266 kB]
+    Get:44 http://http.debian.net/debian/ jessie/main git amd64 1:2.1.4-2.1 [3624 kB]
+    Get:45 http://http.debian.net/debian/ jessie/main libalgorithm-c3-perl all 0.09-1 [11.9 kB]
+    Get:46 http://http.debian.net/debian/ jessie/main libarchive-extract-perl all 0.72-1 [24.8 kB]
+    Get:47 http://http.debian.net/debian/ jessie/main libcgi-pm-perl all 4.09-1 [213 kB]
+    Get:48 http://http.debian.net/debian/ jessie/main libfcgi-perl amd64 0.77-1+b1 [39.1 kB]
+    Get:49 http://http.debian.net/debian/ jessie/main libcgi-fast-perl all 1:2.04-1 [10.9 kB]
+    Get:50 http://http.debian.net/debian/ jessie/main libclass-c3-perl all 0.26-1 [22.9 kB]
+    Get:51 http://http.debian.net/debian/ jessie/main libclass-c3-xs-perl amd64 0.13-2+b1 [15.2 kB]
+    Get:52 http://http.debian.net/debian/ jessie/main libcpan-meta-perl all 2.142690-1 [125 kB]
+    Get:53 http://http.debian.net/debian/ jessie/main libparams-util-perl amd64 1.07-2+b1 [23.5 kB]
+    Get:54 http://http.debian.net/debian/ jessie/main libsub-install-perl all 0.928-1 [11.4 kB]
+    Get:55 http://http.debian.net/debian/ jessie/main libdata-optlist-perl all 0.109-1 [10.6 kB]
+    Get:56 http://http.debian.net/debian/ jessie/main libmro-compat-perl all 0.12-1 [13.2 kB]
+    Get:57 http://http.debian.net/debian/ jessie/main libsub-exporter-perl all 0.986-1 [49.9 kB]
+    Get:58 http://http.debian.net/debian/ jessie/main libdata-section-perl all 0.200006-1 [13.4 kB]
+    Get:59 http://http.debian.net/debian/ jessie/main liblog-message-perl all 0.8-1 [26.0 kB]
+    Get:60 http://http.debian.net/debian/ jessie/main liblog-message-simple-perl all 0.10-2 [8126 B]
+    Get:61 http://http.debian.net/debian/ jessie/main libmodule-build-perl all 0.421000-2 [265 kB]
+    Get:62 http://http.debian.net/debian/ jessie/main libmodule-pluggable-perl all 5.1-1 [25.0 kB]
+    Get:63 http://http.debian.net/debian/ jessie/main libmodule-signature-perl all 0.73-1+deb8u2 [30.4 kB]
+    Get:64 http://http.debian.net/debian/ jessie/main libpackage-constants-perl all 0.04-1 [5820 B]
+    Get:65 http://http.debian.net/debian/ jessie/main libpod-latex-perl all 0.61-1 [34.7 kB]
+    Get:66 http://http.debian.net/debian/ jessie/main libregexp-common-perl all 2013031301-1 [173 kB]
+    Get:67 http://http.debian.net/debian/ jessie/main libpod-readme-perl all 0.11-1 [15.3 kB]
+    Get:68 http://http.debian.net/debian/ jessie/main libsasl2-modules amd64 2.1.26.dfsg1-13 [101 kB]
+    Get:69 http://http.debian.net/debian/ jessie/main libtext-template-perl all 1.46-1 [53.1 kB]
+    Get:70 http://http.debian.net/debian/ jessie/main libsoftware-license-perl all 0.103010-3 [119 kB]
+    Get:71 http://http.debian.net/debian/ jessie/main libterm-ui-perl all 0.42-1 [19.1 kB]
+    Get:72 http://http.debian.net/debian/ jessie/main libtext-soundex-perl amd64 3.4-1+b2 [13.7 kB]
+    Get:73 http://http.debian.net/debian/ jessie/main rename all 0.20-3 [12.4 kB]
+    Get:74 http://http.debian.net/debian/ jessie/main rsync amd64 3.1.1-3 [390 kB]
+    Get:75 http://http.debian.net/debian/ jessie/main xauth amd64 1:1.0.9-1 [38.2 kB]
+    [91mdebconf: delaying package configuration, since apt-utils is not installed
+    [0mFetched 23.0 MB in 1min 3s (364 kB/s)
+    (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 7521 files and directories currently installed.)
+    Preparing to unpack .../perl-base_5.20.2-3+deb8u1_amd64.deb ...
+    Unpacking perl-base (5.20.2-3+deb8u1) over (5.20.1-4) ...
+    Setting up perl-base (5.20.2-3+deb8u1) ...
+    Selecting previously unselected package libgdbm3:amd64.
+    (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 7521 files and directories currently installed.)
+    Preparing to unpack .../libgdbm3_1.8.3-13.1_amd64.deb ...
+    Unpacking libgdbm3:amd64 (1.8.3-13.1) ...
+    Selecting previously unselected package libpopt0:amd64.
+    Preparing to unpack .../libpopt0_1.16-10_amd64.deb ...
+    Unpacking libpopt0:amd64 (1.16-10) ...
+    Selecting previously unselected package libssl1.0.0:amd64.
+    Preparing to unpack .../libssl1.0.0_1.0.1k-3+deb8u1_amd64.deb ...
+    Unpacking libssl1.0.0:amd64 (1.0.1k-3+deb8u1) ...
+    Selecting previously unselected package libbsd0:amd64.
+    Preparing to unpack .../libbsd0_0.7.0-2_amd64.deb ...
+    Unpacking libbsd0:amd64 (0.7.0-2) ...
+    Selecting previously unselected package libedit2:amd64.
+    Preparing to unpack .../libedit2_3.1-20140620-2_amd64.deb ...
+    Unpacking libedit2:amd64 (3.1-20140620-2) ...
+    Selecting previously unselected package libgmp10:amd64.
+    Preparing to unpack .../libgmp10_2%3a6.0.0+dfsg-6_amd64.deb ...
+    Unpacking libgmp10:amd64 (2:6.0.0+dfsg-6) ...
+    Selecting previously unselected package libnettle4:amd64.
+    Preparing to unpack .../libnettle4_2.7.1-5_amd64.deb ...
+    Unpacking libnettle4:amd64 (2.7.1-5) ...
+    Selecting previously unselected package libhogweed2:amd64.
+    Preparing to unpack .../libhogweed2_2.7.1-5_amd64.deb ...
+    Unpacking libhogweed2:amd64 (2.7.1-5) ...
+    Selecting previously unselected package libffi6:amd64.
+    Preparing to unpack .../libffi6_3.1-2+b2_amd64.deb ...
+    Unpacking libffi6:amd64 (3.1-2+b2) ...
+    Selecting previously unselected package libp11-kit0:amd64.
+    Preparing to unpack .../libp11-kit0_0.20.7-1_amd64.deb ...
+    Unpacking libp11-kit0:amd64 (0.20.7-1) ...
+    Selecting previously unselected package libtasn1-6:amd64.
+    Preparing to unpack .../libtasn1-6_4.2-3+deb8u1_amd64.deb ...
+    Unpacking libtasn1-6:amd64 (4.2-3+deb8u1) ...
+    Selecting previously unselected package libgnutls-deb0-28:amd64.
+    Preparing to unpack .../libgnutls-deb0-28_3.3.8-6+deb8u1_amd64.deb ...
+    Unpacking libgnutls-deb0-28:amd64 (3.3.8-6+deb8u1) ...
+    Selecting previously unselected package libkeyutils1:amd64.
+    Preparing to unpack .../libkeyutils1_1.5.9-5+b1_amd64.deb ...
+    Unpacking libkeyutils1:amd64 (1.5.9-5+b1) ...
+    Selecting previously unselected package libkrb5support0:amd64.
+    Preparing to unpack .../libkrb5support0_1.12.1+dfsg-19_amd64.deb ...
+    Unpacking libkrb5support0:amd64 (1.12.1+dfsg-19) ...
+    Selecting previously unselected package libk5crypto3:amd64.
+    Preparing to unpack .../libk5crypto3_1.12.1+dfsg-19_amd64.deb ...
+    Unpacking libk5crypto3:amd64 (1.12.1+dfsg-19) ...
+    Selecting previously unselected package libkrb5-3:amd64.
+    Preparing to unpack .../libkrb5-3_1.12.1+dfsg-19_amd64.deb ...
+    Unpacking libkrb5-3:amd64 (1.12.1+dfsg-19) ...
+    Selecting previously unselected package libgssapi-krb5-2:amd64.
+    Preparing to unpack .../libgssapi-krb5-2_1.12.1+dfsg-19_amd64.deb ...
+    Unpacking libgssapi-krb5-2:amd64 (1.12.1+dfsg-19) ...
+    Selecting previously unselected package libidn11:amd64.
+    Preparing to unpack .../libidn11_1.29-1+b2_amd64.deb ...
+    Unpacking libidn11:amd64 (1.29-1+b2) ...
+    Selecting previously unselected package libsasl2-modules-db:amd64.
+    Preparing to unpack .../libsasl2-modules-db_2.1.26.dfsg1-13_amd64.deb ...
+    Unpacking libsasl2-modules-db:amd64 (2.1.26.dfsg1-13) ...
+    Selecting previously unselected package libsasl2-2:amd64.
+    Preparing to unpack .../libsasl2-2_2.1.26.dfsg1-13_amd64.deb ...
+    Unpacking libsasl2-2:amd64 (2.1.26.dfsg1-13) ...
+    Selecting previously unselected package libldap-2.4-2:amd64.
+    Preparing to unpack .../libldap-2.4-2_2.4.40+dfsg-1_amd64.deb ...
+    Unpacking libldap-2.4-2:amd64 (2.4.40+dfsg-1) ...
+    Selecting previously unselected package perl-modules.
+    Preparing to unpack .../perl-modules_5.20.2-3+deb8u1_all.deb ...
+    Unpacking perl-modules (5.20.2-3+deb8u1) ...
+    Selecting previously unselected package perl.
+    Preparing to unpack .../perl_5.20.2-3+deb8u1_amd64.deb ...
+    Unpacking perl (5.20.2-3+deb8u1) ...
+    Selecting previously unselected package librtmp1:amd64.
+    Preparing to unpack .../librtmp1_2.4+20150115.gita107cef-1_amd64.deb ...
+    Unpacking librtmp1:amd64 (2.4+20150115.gita107cef-1) ...
+    Selecting previously unselected package libssh2-1:amd64.
+    Preparing to unpack .../libssh2-1_1.4.3-4.1_amd64.deb ...
+    Unpacking libssh2-1:amd64 (1.4.3-4.1) ...
+    Selecting previously unselected package libcurl3-gnutls:amd64.
+    Preparing to unpack .../libcurl3-gnutls_7.38.0-4+deb8u2_amd64.deb ...
+    Unpacking libcurl3-gnutls:amd64 (7.38.0-4+deb8u2) ...
+    Selecting previously unselected package libexpat1:amd64.
+    Preparing to unpack .../libexpat1_2.1.0-6+b3_amd64.deb ...
+    Unpacking libexpat1:amd64 (2.1.0-6+b3) ...
+    Selecting previously unselected package libxau6:amd64.
+    Preparing to unpack .../libxau6_1%3a1.0.8-1_amd64.deb ...
+    Unpacking libxau6:amd64 (1:1.0.8-1) ...
+    Selecting previously unselected package libxdmcp6:amd64.
+    Preparing to unpack .../libxdmcp6_1%3a1.1.1-1+b1_amd64.deb ...
+    Unpacking libxdmcp6:amd64 (1:1.1.1-1+b1) ...
+    Selecting previously unselected package libxcb1:amd64.
+    Preparing to unpack .../libxcb1_1.10-3+b1_amd64.deb ...
+    Unpacking libxcb1:amd64 (1.10-3+b1) ...
+    Selecting previously unselected package libx11-data.
+    Preparing to unpack .../libx11-data_2%3a1.6.2-3_all.deb ...
+    Unpacking libx11-data (2:1.6.2-3) ...
+    Selecting previously unselected package libx11-6:amd64.
+    Preparing to unpack .../libx11-6_2%3a1.6.2-3_amd64.deb ...
+    Unpacking libx11-6:amd64 (2:1.6.2-3) ...
+    Selecting previously unselected package libxext6:amd64.
+    Preparing to unpack .../libxext6_2%3a1.3.3-1_amd64.deb ...
+    Unpacking libxext6:amd64 (2:1.3.3-1) ...
+    Selecting previously unselected package libxmuu1:amd64.
+    Preparing to unpack .../libxmuu1_2%3a1.1.2-1_amd64.deb ...
+    Unpacking libxmuu1:amd64 (2:1.1.2-1) ...
+    Selecting previously unselected package less.
+    Preparing to unpack .../archives/less_458-3_amd64.deb ...
+    Unpacking less (458-3) ...
+    Selecting previously unselected package krb5-locales.
+    Preparing to unpack .../krb5-locales_1.12.1+dfsg-19_all.deb ...
+    Unpacking krb5-locales (1.12.1+dfsg-19) ...
+    Selecting previously unselected package openssh-client.
+    Preparing to unpack .../openssh-client_1%3a6.7p1-5_amd64.deb ...
+    Unpacking openssh-client (1:6.7p1-5) ...
+    Selecting previously unselected package patch.
+    Preparing to unpack .../patch_2.7.5-1_amd64.deb ...
+    Unpacking patch (2.7.5-1) ...
+    Selecting previously unselected package openssl.
+    Preparing to unpack .../openssl_1.0.1k-3+deb8u1_amd64.deb ...
+    Unpacking openssl (1.0.1k-3+deb8u1) ...
+    Selecting previously unselected package ca-certificates.
+    Preparing to unpack .../ca-certificates_20141019_all.deb ...
+    Unpacking ca-certificates (20141019) ...
+    Selecting previously unselected package liberror-perl.
+    Preparing to unpack .../liberror-perl_0.17-1.1_all.deb ...
+    Unpacking liberror-perl (0.17-1.1) ...
+    Selecting previously unselected package git-man.
+    Preparing to unpack .../git-man_1%3a2.1.4-2.1_all.deb ...
+    Unpacking git-man (1:2.1.4-2.1) ...
+    Selecting previously unselected package git.
+    Preparing to unpack .../git_1%3a2.1.4-2.1_amd64.deb ...
+    Unpacking git (1:2.1.4-2.1) ...
+    Selecting previously unselected package libalgorithm-c3-perl.
+    Preparing to unpack .../libalgorithm-c3-perl_0.09-1_all.deb ...
+    Unpacking libalgorithm-c3-perl (0.09-1) ...
+    Selecting previously unselected package libarchive-extract-perl.
+    Preparing to unpack .../libarchive-extract-perl_0.72-1_all.deb ...
+    Unpacking libarchive-extract-perl (0.72-1) ...
+    Selecting previously unselected package libcgi-pm-perl.
+    Preparing to unpack .../libcgi-pm-perl_4.09-1_all.deb ...
+    Unpacking libcgi-pm-perl (4.09-1) ...
+    Selecting previously unselected package libfcgi-perl.
+    Preparing to unpack .../libfcgi-perl_0.77-1+b1_amd64.deb ...
+    Unpacking libfcgi-perl (0.77-1+b1) ...
+    Selecting previously unselected package libcgi-fast-perl.
+    Preparing to unpack .../libcgi-fast-perl_1%3a2.04-1_all.deb ...
+    Unpacking libcgi-fast-perl (1:2.04-1) ...
+    Selecting previously unselected package libclass-c3-perl.
+    Preparing to unpack .../libclass-c3-perl_0.26-1_all.deb ...
+    Unpacking libclass-c3-perl (0.26-1) ...
+    Selecting previously unselected package libclass-c3-xs-perl.
+    Preparing to unpack .../libclass-c3-xs-perl_0.13-2+b1_amd64.deb ...
+    Unpacking libclass-c3-xs-perl (0.13-2+b1) ...
+    Selecting previously unselected package libcpan-meta-perl.
+    Preparing to unpack .../libcpan-meta-perl_2.142690-1_all.deb ...
+    Unpacking libcpan-meta-perl (2.142690-1) ...
+    Selecting previously unselected package libparams-util-perl.
+    Preparing to unpack .../libparams-util-perl_1.07-2+b1_amd64.deb ...
+    Unpacking libparams-util-perl (1.07-2+b1) ...
+    Selecting previously unselected package libsub-install-perl.
+    Preparing to unpack .../libsub-install-perl_0.928-1_all.deb ...
+    Unpacking libsub-install-perl (0.928-1) ...
+    Selecting previously unselected package libdata-optlist-perl.
+    Preparing to unpack .../libdata-optlist-perl_0.109-1_all.deb ...
+    Unpacking libdata-optlist-perl (0.109-1) ...
+    Selecting previously unselected package libmro-compat-perl.
+    Preparing to unpack .../libmro-compat-perl_0.12-1_all.deb ...
+    Unpacking libmro-compat-perl (0.12-1) ...
+    Selecting previously unselected package libsub-exporter-perl.
+    Preparing to unpack .../libsub-exporter-perl_0.986-1_all.deb ...
+    Unpacking libsub-exporter-perl (0.986-1) ...
+    Selecting previously unselected package libdata-section-perl.
+    Preparing to unpack .../libdata-section-perl_0.200006-1_all.deb ...
+    Unpacking libdata-section-perl (0.200006-1) ...
+    Selecting previously unselected package liblog-message-perl.
+    Preparing to unpack .../liblog-message-perl_0.8-1_all.deb ...
+    Unpacking liblog-message-perl (0.8-1) ...
+    Selecting previously unselected package liblog-message-simple-perl.
+    Preparing to unpack .../liblog-message-simple-perl_0.10-2_all.deb ...
+    Unpacking liblog-message-simple-perl (0.10-2) ...
+    Selecting previously unselected package libmodule-build-perl.
+    Preparing to unpack .../libmodule-build-perl_0.421000-2_all.deb ...
+    Adding 'diversion of /usr/bin/config_data to /usr/bin/config_data.diverted by libmodule-build-perl'
+    Adding 'diversion of /usr/share/man/man1/config_data.1.gz to /usr/share/man/man1/config_data.diverted.1.gz by libmodule-build-perl'
+    Unpacking libmodule-build-perl (0.421000-2) ...
+    Selecting previously unselected package libmodule-pluggable-perl.
+    Preparing to unpack .../libmodule-pluggable-perl_5.1-1_all.deb ...
+    Unpacking libmodule-pluggable-perl (5.1-1) ...
+    Selecting previously unselected package libmodule-signature-perl.
+    Preparing to unpack .../libmodule-signature-perl_0.73-1+deb8u2_all.deb ...
+    Unpacking libmodule-signature-perl (0.73-1+deb8u2) ...
+    Selecting previously unselected package libpackage-constants-perl.
+    Preparing to unpack .../libpackage-constants-perl_0.04-1_all.deb ...
+    Unpacking libpackage-constants-perl (0.04-1) ...
+    Selecting previously unselected package libpod-latex-perl.
+    Preparing to unpack .../libpod-latex-perl_0.61-1_all.deb ...
+    Adding 'diversion of /usr/bin/pod2latex to /usr/bin/pod2latex.bundled by libpod-latex-perl'
+    Adding 'diversion of /usr/share/man/man1/pod2latex.1.gz to /usr/share/man/man1/pod2latex.bundled.1.gz by libpod-latex-perl'
+    Unpacking libpod-latex-perl (0.61-1) ...
+    Selecting previously unselected package libregexp-common-perl.
+    Preparing to unpack .../libregexp-common-perl_2013031301-1_all.deb ...
+    Unpacking libregexp-common-perl (2013031301-1) ...
+    Selecting previously unselected package libpod-readme-perl.
+    Preparing to unpack .../libpod-readme-perl_0.11-1_all.deb ...
+    Unpacking libpod-readme-perl (0.11-1) ...
+    Selecting previously unselected package libsasl2-modules:amd64.
+    Preparing to unpack .../libsasl2-modules_2.1.26.dfsg1-13_amd64.deb ...
+    Unpacking libsasl2-modules:amd64 (2.1.26.dfsg1-13) ...
+    Selecting previously unselected package libtext-template-perl.
+    Preparing to unpack .../libtext-template-perl_1.46-1_all.deb ...
+    Unpacking libtext-template-perl (1.46-1) ...
+    Selecting previously unselected package libsoftware-license-perl.
+    Preparing to unpack .../libsoftware-license-perl_0.103010-3_all.deb ...
+    Unpacking libsoftware-license-perl (0.103010-3) ...
+    Selecting previously unselected package libterm-ui-perl.
+    Preparing to unpack .../libterm-ui-perl_0.42-1_all.deb ...
+    Unpacking libterm-ui-perl (0.42-1) ...
+    Selecting previously unselected package libtext-soundex-perl.
+    Preparing to unpack .../libtext-soundex-perl_3.4-1+b2_amd64.deb ...
+    Unpacking libtext-soundex-perl (3.4-1+b2) ...
+    Selecting previously unselected package rename.
+    Preparing to unpack .../archives/rename_0.20-3_all.deb ...
+    Unpacking rename (0.20-3) ...
+    Selecting previously unselected package rsync.
+    Preparing to unpack .../rsync_3.1.1-3_amd64.deb ...
+    Unpacking rsync (3.1.1-3) ...
+    Selecting previously unselected package xauth.
+    Preparing to unpack .../xauth_1%3a1.0.9-1_amd64.deb ...
+    Unpacking xauth (1:1.0.9-1) ...
+    Setting up libgdbm3:amd64 (1.8.3-13.1) ...
+    Setting up libpopt0:amd64 (1.16-10) ...
+    Setting up libssl1.0.0:amd64 (1.0.1k-3+deb8u1) ...
+    debconf: unable to initialize frontend: Dialog
+    debconf: (TERM is not set, so the dialog frontend is not usable.)
+    debconf: falling back to frontend: Readline
+    Setting up libbsd0:amd64 (0.7.0-2) ...
+    Setting up libedit2:amd64 (3.1-20140620-2) ...
+    Setting up libgmp10:amd64 (2:6.0.0+dfsg-6) ...
+    Setting up libnettle4:amd64 (2.7.1-5) ...
+    Setting up libhogweed2:amd64 (2.7.1-5) ...
+    Setting up libffi6:amd64 (3.1-2+b2) ...
+    Setting up libp11-kit0:amd64 (0.20.7-1) ...
+    Setting up libtasn1-6:amd64 (4.2-3+deb8u1) ...
+    Setting up libgnutls-deb0-28:amd64 (3.3.8-6+deb8u1) ...
+    Setting up libkeyutils1:amd64 (1.5.9-5+b1) ...
+    Setting up libkrb5support0:amd64 (1.12.1+dfsg-19) ...
+    Setting up libk5crypto3:amd64 (1.12.1+dfsg-19) ...
+    Setting up libkrb5-3:amd64 (1.12.1+dfsg-19) ...
+    Setting up libgssapi-krb5-2:amd64 (1.12.1+dfsg-19) ...
+    Setting up libidn11:amd64 (1.29-1+b2) ...
+    Setting up libsasl2-modules-db:amd64 (2.1.26.dfsg1-13) ...
+    Setting up libsasl2-2:amd64 (2.1.26.dfsg1-13) ...
+    Setting up libldap-2.4-2:amd64 (2.4.40+dfsg-1) ...
+    Setting up perl-modules (5.20.2-3+deb8u1) ...
+    Setting up perl (5.20.2-3+deb8u1) ...
+    update-alternatives: using /usr/bin/prename to provide /usr/bin/rename (rename) in auto mode
+    Setting up librtmp1:amd64 (2.4+20150115.gita107cef-1) ...
+    Setting up libssh2-1:amd64 (1.4.3-4.1) ...
+    Setting up libcurl3-gnutls:amd64 (7.38.0-4+deb8u2) ...
+    Setting up libexpat1:amd64 (2.1.0-6+b3) ...
+    Setting up libxau6:amd64 (1:1.0.8-1) ...
+    Setting up libxdmcp6:amd64 (1:1.1.1-1+b1) ...
+    Setting up libxcb1:amd64 (1.10-3+b1) ...
+    Setting up libx11-data (2:1.6.2-3) ...
+    Setting up libx11-6:amd64 (2:1.6.2-3) ...
+    Setting up libxext6:amd64 (2:1.3.3-1) ...
+    Setting up libxmuu1:amd64 (2:1.1.2-1) ...
+    Setting up less (458-3) ...
+    debconf: unable to initialize frontend: Dialog
+    debconf: (TERM is not set, so the dialog frontend is not usable.)
+    debconf: falling back to frontend: Readline
+    Setting up krb5-locales (1.12.1+dfsg-19) ...
+    Setting up openssh-client (1:6.7p1-5) ...
+    Setting up patch (2.7.5-1) ...
+    Setting up openssl (1.0.1k-3+deb8u1) ...
+    Setting up ca-certificates (20141019) ...
+    debconf: unable to initialize frontend: Dialog
+    debconf: (TERM is not set, so the dialog frontend is not usable.)
+    debconf: falling back to frontend: Readline
+    Setting up liberror-perl (0.17-1.1) ...
+    Setting up git-man (1:2.1.4-2.1) ...
+    Setting up git (1:2.1.4-2.1) ...
+    Setting up libalgorithm-c3-perl (0.09-1) ...
+    Setting up libarchive-extract-perl (0.72-1) ...
+    Setting up libcgi-pm-perl (4.09-1) ...
+    Setting up libfcgi-perl (0.77-1+b1) ...
+    Setting up libcgi-fast-perl (1:2.04-1) ...
+    Setting up libclass-c3-perl (0.26-1) ...
+    Setting up libclass-c3-xs-perl (0.13-2+b1) ...
+    Setting up libcpan-meta-perl (2.142690-1) ...
+    Setting up libparams-util-perl (1.07-2+b1) ...
+    Setting up libsub-install-perl (0.928-1) ...
+    Setting up libdata-optlist-perl (0.109-1) ...
+    Setting up libmro-compat-perl (0.12-1) ...
+    Setting up libsub-exporter-perl (0.986-1) ...
+    Setting up libdata-section-perl (0.200006-1) ...
+    Setting up liblog-message-perl (0.8-1) ...
+    Setting up liblog-message-simple-perl (0.10-2) ...
+    Setting up libmodule-build-perl (0.421000-2) ...
+    Setting up libmodule-pluggable-perl (5.1-1) ...
+    Setting up libmodule-signature-perl (0.73-1+deb8u2) ...
+    Setting up libpackage-constants-perl (0.04-1) ...
+    Setting up libpod-latex-perl (0.61-1) ...
+    Setting up libregexp-common-perl (2013031301-1) ...
+    Setting up libpod-readme-perl (0.11-1) ...
+    Setting up libsasl2-modules:amd64 (2.1.26.dfsg1-13) ...
+    Setting up libtext-template-perl (1.46-1) ...
+    Setting up libsoftware-license-perl (0.103010-3) ...
+    Setting up libterm-ui-perl (0.42-1) ...
+    Setting up libtext-soundex-perl (3.4-1+b2) ...
+    Setting up rename (0.20-3) ...
+    update-alternatives: using /usr/bin/file-rename to provide /usr/bin/rename (rename) in auto mode
+    Setting up rsync (3.1.1-3) ...
+    invoke-rc.d: policy-rc.d denied execution of restart.
+    Setting up xauth (1:1.0.9-1) ...
+    Processing triggers for libc-bin (2.19-13) ...
+    Processing triggers for ca-certificates (20141019) ...
+    Updating certificates in /etc/ssl/certs... 173 added, 0 removed; done.
+    Running hooks in /etc/ca-certificates/update.d....done.
+    ---> 27eaa0a824ed
+    Removing intermediate container baa66fcd54f6
+    Step 4 : ADD http://bit.ly/1HyjEeA /whale.gif
+
+    ---> 8e892b0c7293
+    Removing intermediate container 08973e343bb4
+    Step 5 : EXPOSE 8080
+    ---> Running in 12132a766575
+    ---> f8d097df7f9b
+    Removing intermediate container 12132a766575
+    Step 6 : VOLUME /data
+    ---> Running in 9df32f604e20
+    ---> fb8331b1e239
+    Removing intermediate container 9df32f604e20
+    Step 7 : ENV IN_DOCKER y
+    ---> Running in 580b723fa478
+    ---> a30ed94f2fa4
+    Removing intermediate container 580b723fa478
+    Step 8 : WORKDIR /
+    ---> Running in 0249834f18b1
+    ---> 789e53a31d28
+    Removing intermediate container 0249834f18b1
+    Step 9 : CMD http://github.com/vdemeester/webapp
+    ---> Running in 92cfcf556113
+    ---> db8c3f93b971
+    Removing intermediate container 92cfcf556113
+    Step 10 : ENTRYPOINT /usr/bin/git clone
+    ---> Running in 16a302a42d53
+    ---> 75f7a7fb73a0
+    Removing intermediate container 16a302a42d53
+    Step 11 : ONBUILD run touch /tmp/onbuild
+    ---> Running in 68d73bcb42e0
+    ---> baf1eb9d9a06
+    Removing intermediate container 68d73bcb42e0
+    Successfully built baf1eb9d9a06
+
+    Now we can have fun :
+
+
+    Start a container based on this image with the default command
+
+    #+BEGIN_SRC sh :results raw
+      TERM=xterm docker run -ti vdemeester/mydumbimage
+    #+END_SRC
+
+    #+RESULTS:
+    Cloning into 'webapp'...
+    remote: Counting objects: 53, done.
+    remote: Compressing objects: 100% (5/5), done.
+    remote: Total 53 (delta 0), reused 0 (delta 0), pack-reused 48
+    Unpacking objects: 100% (53/53), done.
+    Checking connectivity... done.
+
+2. Start a container based on this image with a different command
+
+    #+BEGIN_SRC sh :results raw
+      TERM=xterm docker run -ti vdemeester/mydumbimage http://github.com/vdemeester/hack-a-docker
+    #+END_SRC
+
+    #+RESULTS:
+    Cloning into 'hack-a-docker'...
+    remote: Counting objects: 21, done.
+    remote: Total 21 (delta 0), reused 0 (delta 0), pack-reused 21
+    Unpacking objects: 100% (21/21), done.
+    Checking connectivity... done.
+
+
+3. Build an image from this one and look at a particular file
+
+    #+BEGIN_SRC sh :results raw
+      docker build -t vdemeester/mydumbimage2 - <<EOF
+      FROM vdemeester/mydumbimage
+      RUN ls -l /tmp/onbuild
+      EOF
+    #+END_SRC
+
+    #+RESULTS:
+    Sending build context to Docker daemon 2.048 kB
+    Sending build context to Docker daemon 
+    Step 0 : FROM vdemeester/mydumbimage
+    [91m# Executing 1 build triggers
+    [0mTrigger 0, RUN touch /tmp/onbuild
+    Step 0 : RUN touch /tmp/onbuild
+     ---> Running in db1e670b12d0
+     ---> b485e148bf21
+    Removing intermediate container db1e670b12d0
+    Step 1 : RUN ls -l /tmp/onbuild
+     ---> Running in 4e09a50544b3
+    -rw-r--r-- 1 root root 0 Jun 21 11:14 /tmp/onbuild
+     ---> d22908e26a7f
+    Removing intermediate container 4e09a50544b3
+    Successfully built d22908e26a7f
+
+Now time to test the docker API, let's go [[file:restclient.txt][here]].
+
+** Tests
+
+   #+BEGIN_SRC sh :results raw
+    docker ps
+   #+END_SRC
+
+   #+RESULTS:
+   CONTAINER ID        IMAGE                                       COMMAND             CREATED             STATUS              PORTS                    NAMES
+   68ef41a9b8b4        training/docker-fundamentals-image:latest   "showoff serve"     14 hours ago        Up 14 hours         0.0.0.0:9090->9090/tcp   showoff
+   ebcf91eb9751        tz-docker-night-light:latest                "grunt"             24 hours ago        Up 24 hours         0.0.0.0:8000->8000/tcp   tz-prez
+   8412b56f8864        zenika/go-server:latest                     "go-wrapper run"    24 hours ago        Up 24 hours         0.0.0.0:80->8000/tcp     tz-static
