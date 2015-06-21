@@ -1,1 +1,5 @@
 static
+run.sh
+generate.sh
+populate-static.sh
+*.MD
