@@ -17,6 +17,7 @@
 
 ## Tips & tricks before starting
 
+- Clone the hands-on branch :<br/> ``git clone -b hands-on git@github.com:vdemeester/talk-docker-from-night-to-daylight.git``
 - To start elasticsearch ``bin/elasticsearch``
 - ``run`` options
     - ``-v`` (``--volume``) : bind a folder from host to container (``hostFolder:containerFolder``) [optional]

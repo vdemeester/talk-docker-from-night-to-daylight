@@ -13,9 +13,8 @@ Run *flask by example* on you laptop, thanks to docker-compose.
 
 ## Detail of the mission
 
-- Sources are available here : https://hokkaido.local/hands-on-2.tgz
-    - ``flask-by-example`` : application sources<br />``git clone https://github.com/vdemeester/flask-by-example``
-    - ``docker-compose.yml`` : file to complete
+- Clone the hands-on branch :<br/> ``git clone -b hands-on git@github.com:vdemeester/talk-docker-from-night-to-daylight.git``
+
 - Base images to use
     - postgres (official)
     - redis (official)
