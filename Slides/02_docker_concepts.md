@@ -25,7 +25,7 @@
 
 - Create and start<br/>
 ``$ docker create jpettazo/clock``<br/>
-``$ docker start -d 0c1``
+``$ docker start 0c1``
 
 - Is it running ?<br/>
 ``$ docker ps``<br/>
