@@ -1,6 +1,6 @@
 # Hands-on n.1
 
-The goals here is to build an elasticsearch image and run it.
+The goal here is to build an elasticsearch image and run it.
 
 To do this you will have to:
 
