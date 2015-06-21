@@ -1060,15 +1060,138 @@ Let's build it with Java 7
 #+BEGIN_SRC sh :dir /tmp/fluent-http :results raw
   docker run --rm -v "$(pwd)":/usr/src/myapp -w /usr/src/myapp \
          maven:3-jdk-7 mvn clean install
-#+END_SRC# Try with Java 7 ?
+#+END_SRC
 
 #+RESULTS:
 
-*** For the fun :)
-
 ** Multi containers
+*** Links
+
+Let's run a container and link to it
+
+#+BEGIN_SRC sh :results raw
+  docker run -P --name sample-app -d zenika/nodejs-sample-app
+  docker port sample-app
+  docker run --link sample-app:app debian:jessie ping -c 3 app
+#+END_SRC
+
+#+RESULTS:
+7a085a739607eea76a484342f6277dce47eea61a27a89a4dc9b0a1dc68539728
+8080/tcp -> 0.0.0.0:32774
+PING app (172.17.0.89): 56 data bytes
+64 bytes from 172.17.0.89: icmp_seq=0 ttl=64 time=0.106 ms
+64 bytes from 172.17.0.89: icmp_seq=1 ttl=64 time=0.164 ms
+64 bytes from 172.17.0.89: icmp_seq=2 ttl=64 time=0.141 ms
+--- app ping statistics ---
+3 packets transmitted, 3 packets received, 0% packet loss
+round-trip min/avg/max/stddev = 0.106/0.137/0.164/0.024 ms
+
+Let's say I want to use Postgres but I don't even have the client on
+my host.. No problemo
+
+#+BEGIN_SRC sh :results raw
+  docker run --name some-postgres -e POSTGRES_PASSWORD=mysecretpassword -d postgres
+  sleep 5
+  docker run -it --link some-postgres:postgres --rm postgres sh -c 'exec psql -h "$POSTGRES_PORT_5432_TCP_ADDR" -p "$POSTGRES_PORT_5432_TCP_PORT" -U postgres'
+#+END_SRC
+
+#+RESULTS:
+04f5f4d564371e7db00a3c973b88a2e1b7a4986b18651138dc4e6c0bf4f2a867
+Password for user postgres: 
+psql (9.4.1)
+Type "help" for help.
+
+postgres=# help
+You are using psql, the command-line interface to PostgreSQL.
+Type:  \copyright for distribution terms
+       \h for help with SQL commands
+       \? for help with psql commands
+       \g or terminate with semicolon to execute query
+       \q to quit
+
+*** docker-compose
+
+I'm lazy so I'm gonna use the =figdemo= from @jpetazzo :D.
+
+#+BEGIN_SRC sh :dir /tmp :results raw
+git clone https://github.com/jpetazzo/figdemo
+#+END_SRC
+
+#+RESULTS:
+
+Let's build what's needed to be built.
+
+#+BEGIN_SRC sh :dir /tmp/figdemo :results raw
+docker-compose build
+#+END_SRC
+
+#+RESULTS:
+Building web...
+Step 0 : FROM python:2.7
+ ---> 65c00af7c3f9
+Step 1 : ADD requirements.txt /code/requirements.txt
+ ---> a319c73560ba
+Removing intermediate container 7316aa99b435
+Step 2 : WORKDIR /code
+ ---> Running in e0fb01bdf61b
+ ---> ad02fd0cb3a4
+Removing intermediate container e0fb01bdf61b
+Step 3 : RUN pip install -r requirements.txt
+ ---> Running in 2479c61f0fb0
+Collecting flask (from -r requirements.txt (line 1))
+  Downloading Flask-0.10.1.tar.gz (544kB)
+Collecting redis (from -r requirements.txt (line 2))
+  Downloading redis-2.10.3.tar.gz (86kB)
+Collecting Werkzeug>=0.7 (from flask->-r requirements.txt (line 1))
+  Downloading Werkzeug-0.10.4-py2.py3-none-any.whl (293kB)
+Collecting Jinja2>=2.4 (from flask->-r requirements.txt (line 1))
+  Downloading Jinja2-2.7.3.tar.gz (378kB)
+Collecting itsdangerous>=0.21 (from flask->-r requirements.txt (line 1))
+  Downloading itsdangerous-0.24.tar.gz (46kB)
+Collecting markupsafe (from Jinja2>=2.4->flask->-r requirements.txt (line 1))
+  Downloading MarkupSafe-0.23.tar.gz
+Building wheels for collected packages: flask, redis, Jinja2, itsdangerous, markupsafe
+  Running setup.py bdist_wheel for flask
+  Stored in directory: /root/.cache/pip/wheels/d2/db/61/cb9b80526b8f3ba89248ec0a29d6da1bb6013681c930fca987
+  Running setup.py bdist_wheel for redis
+  Stored in directory: /root/.cache/pip/wheels/b4/82/09/7713ff9bc6f6a58e41b0a89433aed5d2293fd5868f76adef94
+  Running setup.py bdist_wheel for Jinja2
+  Stored in directory: /root/.cache/pip/wheels/b3/c0/62/8908d15b90a7de8bd15e2e6e5f5ba1398c0d9940d62a6bf8f5
+  Running setup.py bdist_wheel for itsdangerous
+  Stored in directory: /root/.cache/pip/wheels/97/c0/b8/b37c320ff57e15f993ba0ac98013eee778920b4a7b3ebae3cf
+  Running setup.py bdist_wheel for markupsafe
+  Stored in directory: /root/.cache/pip/wheels/94/a7/79/f79a998b64c1281cb99fa9bbd33cfc9b8b5775f438218d17a7
+Successfully built flask redis Jinja2 itsdangerous markupsafe
+Installing collected packages: Werkzeug, markupsafe, Jinja2, itsdangerous, flask, redis
+Successfully installed Jinja2-2.7.3 Werkzeug-0.10.4 flask-0.10.1 itsdangerous-0.24 markupsafe-0.23 redis-2.10.3
+ ---> de04605d1ab2
+Removing intermediate container 2479c61f0fb0
+Step 4 : ADD . /code
+ ---> ea1158a74ac2
+Removing intermediate container d07a652e1839
+Step 5 : CMD python app.py
+ ---> Running in dbfd003c7028
+ ---> 0482eeb90a5f
+Removing intermediate container dbfd003c7028
+Successfully built 0482eeb90a5f
+
+And now running it (we could do =docker-compose up= but I'll do
+differently)
 
 
+#+BEGIN_SRC sh :dir /tmp/figdemo :results raw
+  docker-compose up -d
+  sleep 5
+  docker-compose ps
+#+END_SRC
+
+#+RESULTS:
+      Name             Command             State              Ports       
+-------------------------------------------------------------------------
+figdemo_redis_1    /entrypoint.sh     Up                 6379/tcp         
+                   redis-server                                           
+figdemo_web_1      python app.py      Up                 0.0.0.0:5000->50 
+                                                         00/tcp           
 
 ** Machine, Swarm & co
 
