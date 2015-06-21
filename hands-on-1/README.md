@@ -12,3 +12,4 @@ $ docker build -t my/elasticsearch
 ```
 3. If everything has gone well, let's run some with ``docker run``.
    Run them it detach mode ``-d`` and bind port with ``-p``
+4. And go to http://127.0.0.1:9200/_plugin/head to see the *magic*.
