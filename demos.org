@@ -932,14 +932,232 @@
 
     Now time to test the docker API, let's go [[file:restclient.txt][here]].
 
-** Tests
+** Simple patterns
+*** Isolate build
 
-   #+BEGIN_SRC sh :results raw
-    docker ps
-   #+END_SRC
+First, let's make sure I don't have npm :)
 
-   #+RESULTS:
-   CONTAINER ID        IMAGE                                       COMMAND             CREATED             STATUS              PORTS                    NAMES
-   68ef41a9b8b4        training/docker-fundamentals-image:latest   "showoff serve"     14 hours ago        Up 14 hours         0.0.0.0:9090->9090/tcp   showoff
-   ebcf91eb9751        tz-docker-night-light:latest                "grunt"             24 hours ago        Up 24 hours         0.0.0.0:8000->8000/tcp   tz-prez
-   8412b56f8864        zenika/go-server:latest                     "go-wrapper run"    24 hours ago        Up 24 hours         0.0.0.0:80->8000/tcp     tz-static
+#+BEGIN_SRC sh :results raw
+  npm install -g grunt
+#+END_SRC
+
+#+RESULTS:
+sh: line 1: npm: command not found
+
+Ok, now let's build a project that needs node && npm.
+
+#+BEGIN_SRC sh :results raw
+  cd /tmp && git clone git@github.com:vdemeester/nodejs-blog.git && cd nodejs-blog
+  docker build -t vdemeester/nodejs-blog .
+#+END_SRC
+
+#+RESULTS:
+Sending build context to Docker daemon 557.1 kBSending build context to Docker daemon 1.114 MBSending build context to Docker daemon 1.671 MBSending build context to Docker daemon 2.228 MBSending build context to Docker daemon 2.785 MBSending build context to Docker daemon 3.342 MBSending build context to Docker daemon 3.899 MBSending build context to Docker daemon 4.456 MBSending build context to Docker daemon 4.602 MB
+Sending build context to Docker daemon 
+Step 0 : FROM node:0.10-onbuild
+[91m# Executing 3 build triggers
+[0mTrigger 0, COPY package.json /usr/src/app/
+Step 0 : COPY package.json /usr/src/app/
+Trigger 1, RUN npm install
+Step 0 : RUN npm install
+ ---> Running in cce781647c5c
+[91mnpm[0m[91m [0m[91mWARN[0m[91m [0m[91mpackage.json[0m[91m expressjs-blog@0.1.8 No README data
+[0m[91mnpm[0m[91m [0m[91mWARN package.json[0m[91m expressjs-blog@0.1.8 No license field.
+[0m[91mnpm[0m[91m [0m[91mWARN[0m[91m [0m[91mengine[0m[91m express-expose@0.2.2: wanted: {"node":">= 0.4.x < 0.8.x"} (current: {"node":"0.10.38","npm":"2.11.1"})
+[0m[91mnpm[0m[91m WARN engine[0m[91m express@2.5.4: wanted: {"node":">= 0.4.1 < 0.7.0"} (current: {"node":"0.10.38","npm":"2.11.1"})
+[0m[91mnpm[0m[91m WARN[0m[91m [0m[91mengine[0m[91m stylus@0.22.6: wanted: {"node":"> 0.4.x < 0.7.0"} (current: {"node":"0.10.38","npm":"2.11.1"})
+[0m[91mnpm[0m[91m [0m[91mWARN[0m[91m [0m[91mexcluding symbolic link[0m[91m lib/index.js -> jade.js
+[0m[91mnpm[0m[91m [0m[91mWARN [0m[91mdeprecated[0m[91m lingo@0.0.5: This project is abandoned
+[0m
+> mongodb@0.9.9-4 install /usr/src/app/node_modules/mongoose/node_modules/mongodb
+> node install.js
+
+================================================================================
+=                                                                              =
+=  To install with C++ bson parser do <npm install mongodb --mongodb:native>   =
+=                                                                              =
+================================================================================
+pusher@0.0.4 node_modules/pusher
+
+express-messages@0.0.2 node_modules/express-messages
+
+express-expose@0.2.2 node_modules/express-expose
+
+express-mongoose@0.0.5 node_modules/express-mongoose
+
+nib@0.3.2 node_modules/nib
+
+express-resource@0.2.4 node_modules/express-resource
+└── lingo@0.0.5
+
+jade@0.25.0 node_modules/jade
+├── commander@0.5.2
+└── mkdirp@0.3.0
+
+stylus@0.22.6 node_modules/stylus
+├── growl@1.1.0
+├── mkdirp@0.0.7
+└── cssom@0.2.1
+
+mongoose@2.5.10 node_modules/mongoose
+├── hooks@0.2.0
+└── mongodb@0.9.9-4
+
+express@2.5.4 node_modules/express
+├── mkdirp@0.0.7
+├── mime@1.3.4
+├── qs@3.1.0
+└── connect@1.9.2 (formidable@1.0.17)
+Trigger 2, COPY . /usr/src/app
+Step 0 : COPY . /usr/src/app
+ ---> 172253ad39c4
+Removing intermediate container 250e92a04bd7
+Removing intermediate container cce781647c5c
+Removing intermediate container 611a4606c16f
+Step 1 : EXPOSE 8080
+ ---> Running in 7fb00a0fa1bb
+ ---> 4870b1a222fe
+Removing intermediate container 7fb00a0fa1bb
+Successfully built 4870b1a222fe
+
+You could now run it
+
+
+#+BEGIN_SRC sh :results raw
+  CID=$(docker run -d -P vdemeester/nodejs-blog)
+  sleep 5
+  docker logs $CID
+#+END_SRC
+
+#+RESULTS:
+
+> expressjs-blog@0.1.8 start /usr/src/app
+> node server.js
+
+Sample Blog v0.1.6 running as local on http://localhost:3000
+
+*** Test in a different environment
+
+Let's try something with fluent-http :)
+
+#+BEGIN_SRC sh :results raw
+  cd /tmp && git clone https://github.com/CodeStory/fluent-http
+#+END_SRC
+
+#+RESULTS:
+
+Let's build it with Java 8
+
+#+BEGIN_SRC sh :dir /tmp/fluent-http :results raw
+  docker run --rm -v "$(pwd)":/usr/src/myapp -w /usr/src/myapp \
+         maven:3-jdk-8 mvn clean install
+#+END_SRC
+
+#+RESULTS:
+
+Let's build it with Java 7
+
+#+BEGIN_SRC sh :dir /tmp/fluent-http :results raw
+  docker run --rm -v "$(pwd)":/usr/src/myapp -w /usr/src/myapp \
+         maven:3-jdk-7 mvn clean install
+#+END_SRC# Try with Java 7 ?
+
+#+RESULTS:
+
+*** For the fun :)
+
+** Multi containers
+
+
+
+** Machine, Swarm & co
+
+Create a machine
+
+#+BEGIN_SRC sh :results raw
+  docker-machine create --driver virtualbox dev
+#+END_SRC
+
+#+RESULTS:
+time="2015-06-21T17:00:07+02:00" level="info" msg="Creating SSH key..." 
+time="2015-06-21T17:00:08+02:00" level="info" msg="Creating VirtualBox VM..." 
+time="2015-06-21T17:00:21+02:00" level="info" msg="Starting VirtualBox VM..." 
+time="2015-06-21T17:00:21+02:00" level="info" msg="Waiting for VM to start..." 
+time="2015-06-21T17:00:56+02:00" level="info" msg="\"dev\" has been created and is now the active machine." 
+time="2015-06-21T17:00:56+02:00" level="info" msg="To point your Docker client at it, run this in your shell: $(docker-machine env dev)" 
+
+Let's see the list of machines.
+
+#+BEGIN_SRC sh :results raw
+  docker-machine ls
+#+END_SRC
+
+#+RESULTS:
+NAME   ACTIVE   DRIVER       STATE     URL                         SWARM
+dev    *        virtualbox   Running   tcp://192.168.99.101:2376   
+
+And run something on it
+
+#+BEGIN_SRC sh :results raw
+  docker ps
+  # Now with machine
+  echo "------------------"
+  $(docker-machine env dev)
+  # now run docker info
+  docker info
+  # docker version
+  docker version
+  # and run something
+  docker run jpetazzo/clock
+  # And ps
+  docker ps
+#+END_SRC
+
+#+RESULTS:
+
+
+Now let's try to run boot machine with swarm
+
+#+BEGIN_SRC sh :results raw
+  SWARM_ID=$(docker run swarm create)
+  docker-machine create \
+      -d virtualbox \
+      --swarm \
+      --swarm-master \
+      --swarm-discovery token://${SWARM_ID} \
+      swarm-master
+  docker-machine create \
+      -d virtualbox \
+      --swarm \
+      --swarm-discovery token://${SWARM_ID} \
+      swarm-node-00
+#+END_SRC
+
+#+RESULTS:
+time="2015-06-21T17:06:27+02:00" level="info" msg="Creating SSH key..." 
+time="2015-06-21T17:06:27+02:00" level="info" msg="Creating VirtualBox VM..." 
+time="2015-06-21T17:06:40+02:00" level="info" msg="Starting VirtualBox VM..." 
+time="2015-06-21T17:06:40+02:00" level="info" msg="Waiting for VM to start..." 
+time="2015-06-21T17:07:27+02:00" level="info" msg="Configuring Swarm..." 
+time="2015-06-21T17:08:13+02:00" level="info" msg="\"swarm-master\" has been created and is now the active machine." 
+time="2015-06-21T17:08:13+02:00" level="info" msg="To point your Docker client at it, run this in your shell: $(docker-machine env swarm-master)" 
+time="2015-06-21T17:08:14+02:00" level="info" msg="Creating SSH key..." 
+time="2015-06-21T17:08:14+02:00" level="info" msg="Creating VirtualBox VM..." 
+time="2015-06-21T17:08:26+02:00" level="info" msg="Starting VirtualBox VM..." 
+time="2015-06-21T17:08:27+02:00" level="info" msg="Waiting for VM to start..." 
+time="2015-06-21T17:09:12+02:00" level="info" msg="Configuring Swarm..." 
+time="2015-06-21T17:09:55+02:00" level="info" msg="\"swarm-node-00\" has been created and is now the active machine." 
+time="2015-06-21T17:09:55+02:00" level="info" msg="To point your Docker client at it, run this in your shell: $(docker-machine env swarm-node-00)" 
+
+Et hop :-)
+
+#+BEGIN_SRC sh :results raw
+  docker-machine ls
+#+END_SRC
+
+#+RESULTS:
+NAME            ACTIVE   DRIVER       STATE     URL                         SWARM
+dev                      virtualbox   Running   tcp://192.168.99.101:2376   
+swarm-master             virtualbox   Running   tcp://192.168.99.102:2376   swarm-master (master)
+swarm-node-00   *        virtualbox   Running   tcp://192.168.99.103:2376   swarm-master
+
