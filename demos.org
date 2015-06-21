@@ -1227,13 +1227,13 @@ And run something on it
   echo "------------------"
   $(docker-machine env dev)
   # now run docker info
-  docker info
+  docker-1.7.0 info
   # docker version
-  docker version
+  docker-1.7.0 version
   # and run something
-  docker run jpetazzo/clock
+  docker-1.7.0 run jpetazzo/clock
   # And ps
-  docker ps
+  docker-1.7.0 ps
 #+END_SRC
 
 #+RESULTS:
