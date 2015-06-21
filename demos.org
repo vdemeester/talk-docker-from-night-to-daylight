@@ -890,7 +890,7 @@
     Unpacking objects: 100% (53/53), done.
     Checking connectivity... done.
 
-2. Start a container based on this image with a different command
+    Start a container based on this image with a different command
 
     #+BEGIN_SRC sh :results raw
       TERM=xterm docker run -ti vdemeester/mydumbimage http://github.com/vdemeester/hack-a-docker
@@ -904,7 +904,7 @@
     Checking connectivity... done.
 
 
-3. Build an image from this one and look at a particular file
+    Build an image from this one and look at a particular file
 
     #+BEGIN_SRC sh :results raw
       docker build -t vdemeester/mydumbimage2 - <<EOF
@@ -914,23 +914,23 @@
     #+END_SRC
 
     #+RESULTS:
-    Sending build context to Docker daemon 2.048 kB
-    Sending build context to Docker daemon 
+    Sending build context to Docker daemon 2.048 kB
+    Sending build context to Docker daemon
     Step 0 : FROM vdemeester/mydumbimage
     [91m# Executing 1 build triggers
     [0mTrigger 0, RUN touch /tmp/onbuild
     Step 0 : RUN touch /tmp/onbuild
-     ---> Running in db1e670b12d0
-     ---> b485e148bf21
+    ---> Running in db1e670b12d0
+    ---> b485e148bf21
     Removing intermediate container db1e670b12d0
     Step 1 : RUN ls -l /tmp/onbuild
-     ---> Running in 4e09a50544b3
+    ---> Running in 4e09a50544b3
     -rw-r--r-- 1 root root 0 Jun 21 11:14 /tmp/onbuild
-     ---> d22908e26a7f
+    ---> d22908e26a7f
     Removing intermediate container 4e09a50544b3
     Successfully built d22908e26a7f
 
-Now time to test the docker API, let's go [[file:restclient.txt][here]].
+    Now time to test the docker API, let's go [[file:restclient.txt][here]].
 
 ** Tests
 
