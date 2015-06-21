@@ -1,26 +1,11 @@
-Détails du modèle dans le [wiki](https://github.com/Zenika/Formation--Modele/wiki)
+# Docker : From night to Daylight
 
-Documentation du [framework](https://github.com/Zenika/Formation--Framework)
+This repository is the sources of a talk I gave at
+[Zenika](http://www.zenika.com), the 22th of June.
 
-# Organisation
-
-- Slides
-- CahierExercices
-- Exercices
-- Installation
-- SessionsNotes
-- PLAN.md doit contenir le plan de formation qui est affiché sur notre site web
-
-*Note : Chaque répertoire contient un README précisant son usage*
-
-# Installation
-
-Pour générer et afficher la formation, il est nécessaire d'avoir `node` et `npm` d'installé (voir [node.js](http://nodejs.org/)).
-
-Exécuter la commande suivante :
-`npm install`
-
-## Utilisation avec Docker
-
-Pour ceux qui veulent se passer de l'installation de `node` et `npm`, et qui ont `docker`, il suffit de lancer la commande suivante : 
-`docker run -it -v $PWD:/data --net=host --rm dockerfile/nodejs-bower-grunt npm install`
+The idea is dense presentation with hands-on to introduce
+[Docker](http://docker.com), what it does and how to use it. We also
+talk about [Compose](https://github.com/docker/compose),
+[Swarm](https://github.com/docker/swarm) and
+[Machine](https://github.com/docker/machine), and some cool demos
+``:-P``.
