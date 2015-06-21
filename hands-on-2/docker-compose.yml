@@ -1,0 +1,25 @@
+db:
+  # 
+  env_file: envfile
+redis:
+  #
+backend:
+  # 
+  command: sh backend.sh
+  env_file: envfile
+  environment:
+    - APP_SETTINGS=config.DevelopmentConfig
+  links:
+    - 
+frontend:
+  # 
+  command: sh frontend.sh
+  ports:
+    - 
+  env_file: envfile
+  environment:
+    - APP_SETTINGS=config.DevelopmentConfig
+  links:
+    - 
+
+
