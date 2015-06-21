@@ -19,7 +19,7 @@
 
 - To start elasticsearch ``bin/elasticsearch``
 - ``run`` options
-    - ``-v`` (``--volume``) : bind a folder from host to container (``hostFolder:containerFolder``)
+    - ``-v`` (``--volume``) : bind a folder from host to container (``hostFolder:containerFolder``) [optional]
     - ``-p`` (``--publish``) : publish a port (``hostPort:containerPort``)
 - Several images : bind different ports on the host (9200, 9201, 9202, ..)
 - To see elsaticserach nodes : http://127.0.0.1:9200/_plugin/head
