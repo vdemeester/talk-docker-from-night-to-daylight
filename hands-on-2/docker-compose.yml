@@ -1,25 +1,27 @@
 db:
-  # 
+  image: postgres
   env_file: envfile
 redis:
-  #
+  image: redis
 backend:
-  # 
+  build: flask-by-example
   command: sh backend.sh
   env_file: envfile
   environment:
     - APP_SETTINGS=config.DevelopmentConfig
   links:
-    - 
+    - db
+    - redis
 frontend:
-  # 
+  build: flask-by-example
   command: sh frontend.sh
   ports:
-    - 
+    - "80:5000"
   env_file: envfile
   environment:
     - APP_SETTINGS=config.DevelopmentConfig
   links:
-    - 
+    - db
+    - redis
 
 
