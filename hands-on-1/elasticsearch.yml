@@ -1,0 +1,6 @@
+path:
+  logs: /data/log
+  data: /data/data
+cluster.name: myelasticsearch
+# discover.zen.ping.multicast.enabled: false # multicast might be cool, or not
+# discover.zen.ping.unicast.hosts: ["localhost"] # plusieurs instance sur votre machine quand même
